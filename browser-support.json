@@ -20,7 +20,7 @@
       "alternatives": [],
       "usage": 1,
       "files": [
-        "demo-baseline/index.html"
+        "examples/baseline-demo/index.html"
       ]
     },
     {
@@ -43,7 +43,7 @@
       "alternatives": [],
       "usage": 1,
       "files": [
-        "demo-baseline/index.html"
+        "examples/baseline-demo/index.html"
       ]
     },
     {
@@ -66,7 +66,7 @@
       "alternatives": [],
       "usage": 1,
       "files": [
-        "demo-baseline/index.html"
+        "examples/baseline-demo/index.html"
       ]
     }
   ],
