@@ -53,6 +53,7 @@ export class PerformanceDashboard {
     </style>
 </head>
 <body>
+    ${this.generateNavigation()}
     <div class="container">
         ${this.generateHeader(score, scoreColor)}
         ${this.generateMetrics(analysis)}
@@ -536,7 +537,112 @@ export class PerformanceDashboard {
                 flex-direction: column;
             }
         }
+        
+        /* Navigation Styles */
+        .dashboard-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #404040;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: ${textColor};
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+        
+        .nav-logo:hover {
+            color: #667eea;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            padding: 8px 16px;
+            color: ${isDark ? '#cccccc' : '#666666'};
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover {
+            background: ${cardBg};
+            color: ${textColor};
+        }
+        
+        .nav-link.active {
+            background: #667eea;
+            color: #ffffff;
+        }
+        
+        body > .dashboard,
+        body > .container {
+            padding-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+        }
         `;
+    }
+
+    /**
+     * Generate navigation bar
+     */
+    generateNavigation() {
+        return `
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">📊 Baseline Check</a>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">🏠 Hub</a>
+                <a href="../baseline/baseline-dashboard.html" class="nav-link">🌐 Baseline</a>
+                <a href="../performance/performance-dashboard.html" class="nav-link active">⚡ Performance</a>
+                <a href="../security/security-dashboard.html" class="nav-link">🔒 Security</a>
+                <a href="../accessibility/accessibility-dashboard.html" class="nav-link">♿ Accessibility</a>
+                <a href="../seo/seo-dashboard.html" class="nav-link">🔍 SEO</a>
+                <a href="../bundle/bundle-dashboard.html" class="nav-link">📦 Bundle</a>
+            </div>
+        </div>
+    </nav>`;
     }
 
     /**
