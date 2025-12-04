@@ -1,0 +1,27 @@
+{
+  "scanId": "1759175234357-qpkmy35kdxp",
+  "timestamp": "2025-09-29T19:47:14.357Z",
+  "metadata": {
+    "paths": [
+      "./test-fixtures"
+    ],
+    "duration": 32,
+    "version": "2.0.0",
+    "scannedFiles": 2,
+    "processedFiles": 0,
+    "errorCount": 2
+  },
+  "features": {
+    "total": 0,
+    "byStatus": {},
+    "byCategory": {},
+    "byBrowser": {},
+    "riskScore": 0,
+    "adoptionScore": 0
+  },
+  "trends": {
+    "modernFeatures": 0,
+    "legacyFeatures": 0,
+    "experimentalFeatures": 0
+  }
+}

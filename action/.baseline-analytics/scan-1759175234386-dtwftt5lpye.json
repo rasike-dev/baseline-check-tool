@@ -1,0 +1,27 @@
+{
+  "scanId": "1759175234386-dtwftt5lpye",
+  "timestamp": "2025-09-29T19:47:14.386Z",
+  "metadata": {
+    "paths": [
+      "./empty-test-dir"
+    ],
+    "duration": 13,
+    "version": "2.0.0",
+    "scannedFiles": 0,
+    "processedFiles": 0,
+    "errorCount": 0
+  },
+  "features": {
+    "total": 0,
+    "byStatus": {},
+    "byCategory": {},
+    "byBrowser": {},
+    "riskScore": 0,
+    "adoptionScore": 0
+  },
+  "trends": {
+    "modernFeatures": 0,
+    "legacyFeatures": 0,
+    "experimentalFeatures": 0
+  }
+}

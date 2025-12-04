@@ -1,0 +1,60 @@
+{
+  "critical": [
+    {
+      "feature": "grid",
+      "polyfill": "css-grid-polyfill",
+      "priority": "critical",
+      "size": 45000,
+      "maintenance": "low",
+      "performance": "medium",
+      "installation": "npm install css-grid-polyfill",
+      "usage": "import \"css-grid-polyfill\"",
+      "alternatives": [
+        "flexbox",
+        "float",
+        "table"
+      ],
+      "browserSupport": {
+        "chrome": "57+",
+        "firefox": "52+",
+        "safari": "10.1+",
+        "edge": "16+"
+      },
+      "lastUpdated": "2021-06-01",
+      "stars": 800,
+      "weeklyDownloads": 25000
+    },
+    {
+      "feature": "variables",
+      "polyfill": "css-vars-ponyfill",
+      "priority": "critical",
+      "size": 12000,
+      "maintenance": "high",
+      "performance": "minimal",
+      "installation": "npm install css-vars-ponyfill",
+      "usage": "import cssVars from \"css-vars-ponyfill\"",
+      "alternatives": [
+        "Sass variables",
+        "CSS preprocessors"
+      ],
+      "browserSupport": {
+        "chrome": "49+",
+        "firefox": "31+",
+        "safari": "9.1+",
+        "edge": "15+"
+      },
+      "lastUpdated": "2023-03-01",
+      "stars": 1200,
+      "weeklyDownloads": 40000
+    }
+  ],
+  "high": [],
+  "medium": [],
+  "low": [],
+  "summary": {
+    "totalPolyfills": 2,
+    "estimatedSize": 57000,
+    "maintenanceLevel": "low",
+    "performanceImpact": "medium"
+  }
+}

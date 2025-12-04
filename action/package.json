@@ -1,0 +1,89 @@
+{
+  "name": "baseline-check-tool",
+  "version": "2.3.2",
+  "description": "Check web features for baseline browser compatibility with smart recommendations and analytics",
+  "type": "module",
+  "bin": {
+    "baseline-check": "./src/cli.js"
+  },
+  "main": "src/index.js",
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "USAGE.md"
+  ],
+  "scripts": {
+    "start": "node src/cli.js",
+    "scan": "node src/cli.js scan",
+    "check": "node src/cli.js check",
+    "monitor": "node src/cli.js monitor",
+    "dashboard": "node src/cli.js dashboard",
+    "alerts": "node src/cli.js alerts",
+    "test": "node --test test/**/*.test.js",
+    "test:ci": "npm test && npm run lint",
+    "test:monitoring": "node --test test/monitoring.test.js",
+    "lint": "echo 'Linting not configured' || true",
+    "build": "echo 'Build completed - using source files'",
+    "build:package": "npm pack",
+    "prepublishOnly": "npm test",
+    "postinstall": "echo '🎉 baseline-check installed! Run: npx baseline-check init'",
+    "ci:test": "npm test",
+    "ci:build": "npm run build",
+    "ci:security": "npm audit --audit-level=moderate",
+    "ci:compatibility": "npx baseline-check-tool@2.1.1 run --paths 'src' --out 'ci-compatibility.json' && npx baseline-check-tool@2.1.1 check --report 'ci-compatibility.json'",
+    "demo:monitor": "node src/cli.js monitor --paths 'src' --dashboard --alerts",
+    "demo:dashboard": "node src/cli.js dashboard --theme dark --output demo-dashboard.html",
+    "demo:realtime": "node demo-realtime-monitoring.js",
+    "dashboards": "./open-dashboards.sh",
+    "dashboards:open": "./open-dashboards.sh"
+  },
+  "keywords": [
+    "web",
+    "compatibility",
+    "baseline",
+    "browser",
+    "features",
+    "mdn",
+    "css",
+    "javascript",
+    "html",
+    "web-apis",
+    "ci-cd",
+    "github-actions",
+    "analytics",
+    "recommendations"
+  ],
+  "author": {
+    "name": "Baseline Check Team",
+    "email": "team@baseline-check.dev",
+    "url": "https://github.com/baseline-check"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/rasike-dev/baseline-check-tool#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rasike-dev/baseline-check-tool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rasike-dev/baseline-check-tool/issues"
+  },
+  "dependencies": {
+    "@mdn/browser-compat-data": "^5.7.6",
+    "commander": "^11.1.0",
+    "globby": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "preferGlobal": true,
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ]
+}

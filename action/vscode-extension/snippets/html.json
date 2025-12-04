@@ -1,0 +1,126 @@
+{
+  "Baseline Check HTML": {
+    "prefix": "baseline-check-html",
+    "body": [
+      "<!-- @baseline-check: ${1:feature-name} -->",
+      "<!-- Status: ${2|baseline_like,risky,unknown|} -->",
+      "<!-- Browser Support: ${3:Chrome 42+, Firefox 39+, Safari 10.1+} -->",
+      "<!-- MDN: ${4:https://developer.mozilla.org/en-US/docs/Web/HTML/Element/element} -->"
+    ],
+    "description": "Add baseline compatibility comment for HTML"
+  },
+  "Modern HTML5 Element": {
+    "prefix": "modern-html",
+    "body": [
+      "<!-- @baseline-check: ${1:HTML5 element} -->",
+      "<!-- Status: baseline_like -->",
+      "<!-- Browser Support: Chrome 4+, Firefox 2+, Safari 3.1+ -->",
+      "",
+      "<${2:element} ${3:attribute}=\"${4:value}\">",
+      "  ${5:Content}",
+      "</${2:element}>"
+    ],
+    "description": "Modern HTML5 element with baseline check"
+  },
+  "Responsive Image": {
+    "prefix": "responsive-img",
+    "body": [
+      "<!-- @baseline-check: responsive images -->",
+      "<!-- Status: baseline_like -->",
+      "<!-- Browser Support: Chrome 38+, Firefox 38+, Safari 9+ -->",
+      "",
+      "<picture>",
+      "  <source media=\"(min-width: 800px)\" srcset=\"${1:large-image.jpg}\">",
+      "  <source media=\"(min-width: 400px)\" srcset=\"${2:medium-image.jpg}\">",
+      "  <img src=\"${3:small-image.jpg}\" alt=\"${4:Description}\" loading=\"lazy\">",
+      "</picture>"
+    ],
+    "description": "Responsive image with fallback"
+  },
+  "Form with Validation": {
+    "prefix": "form-validation",
+    "body": [
+      "<!-- @baseline-check: form validation -->",
+      "<!-- Status: baseline_like -->",
+      "<!-- Browser Support: Chrome 10+, Firefox 4+, Safari 5+ -->",
+      "",
+      "<form ${1:action}=\"${2:/submit}\" method=\"${3|GET,POST|}\" novalidate>",
+      "  <label for=\"${4:field}\">${5:Label}:</label>",
+      "  <input type=\"${6|text,email,password,number,date|} \" id=\"${4:field}\" name=\"${4:field}\" required>",
+      "  <button type=\"submit\">${7:Submit}</button>",
+      "</form>",
+      "",
+      "<script>",
+      "  // Progressive enhancement for validation",
+      "  if (typeof document.querySelector !== 'undefined') {",
+      "    const form = document.querySelector('form');",
+      "    form.addEventListener('submit', function(e) {",
+      "      if (!form.checkValidity()) {",
+      "        e.preventDefault();",
+      "        // Show custom validation messages",
+      "      }",
+      "    });",
+      "  }",
+      "</script>"
+    ],
+    "description": "Form with progressive enhancement validation"
+  },
+  "Semantic HTML Structure": {
+    "prefix": "semantic-html",
+    "body": [
+      "<!-- @baseline-check: semantic HTML -->",
+      "<!-- Status: baseline_like -->",
+      "<!-- Browser Support: Chrome 5+, Firefox 2+, Safari 3.1+ -->",
+      "",
+      "<header>",
+      "  <nav>",
+      "    <ul>",
+      "      <li><a href=\"${1:#home}\">${2:Home}</a></li>",
+      "      <li><a href=\"${3:#about}\">${4:About}</a></li>",
+      "    </ul>",
+      "  </nav>",
+      "</header>",
+      "",
+      "<main>",
+      "  <article>",
+      "    <header>",
+      "      <h1>${5:Article Title}</h1>",
+      "      <time datetime=\"${6:2024-01-01}\">${7:January 1, 2024}</time>",
+      "    </header>",
+      "    <section>",
+      "      <p>${8:Article content}</p>",
+      "    </section>",
+      "  </article>",
+      "</main>",
+      "",
+      "<aside>",
+      "  <h2>${9:Sidebar}</h2>",
+      "  <p>${10:Sidebar content}</p>",
+      "</aside>",
+      "",
+      "<footer>",
+      "  <p>&copy; ${11:2024} ${12:Your Company}</p>",
+      "</footer>"
+    ],
+    "description": "Semantic HTML structure with baseline check"
+  },
+  "Accessible Button": {
+    "prefix": "accessible-button",
+    "body": [
+      "<!-- @baseline-check: accessible button -->",
+      "<!-- Status: baseline_like -->",
+      "<!-- Browser Support: Chrome 1+, Firefox 1+, Safari 1+ -->",
+      "",
+      "<button type=\"${1|button,submit,reset|}\" ${2:aria-label=\"${3:Description}\"} ${4:disabled}>",
+      "  ${5:Button Text}",
+      "</button>",
+      "",
+      "<!-- With icon and text -->",
+      "<button type=\"button\" aria-label=\"${6:Action description}\">",
+      "  <span aria-hidden=\"true\">${7:🔍}</span>",
+      "  <span>${8:Search}</span>",
+      "</button>"
+    ],
+    "description": "Accessible button with ARIA attributes"
+  }
+}

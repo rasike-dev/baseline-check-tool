@@ -1,0 +1,40 @@
+/* Modern CSS with potential compatibility issues */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  backdrop-filter: blur(10px);
+  scroll-behavior: smooth;
+}
+
+/* CSS Custom Properties */
+:root {
+  --primary-color: #667eea;
+  --secondary-color: #764ba2;
+  --spacing: 20px;
+}
+
+/* Modern selectors */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* CSS Grid with subgrid (very new) */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.grid-item {
+  display: grid;
+  grid-template-rows: subgrid;
+}

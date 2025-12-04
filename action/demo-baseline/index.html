@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseline Demo - Modern Web Features</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --text-color: #1f2937;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-demo {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: #2563eb;
+        }
+
+        .canvas-demo {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @supports (display: grid) {
+            .grid {
+                display: grid;
+            }
+        }
+
+        @supports not (display: grid) {
+            .grid {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Baseline Demo</h1>
+            <p>Modern web features with progressive enhancement</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>CSS Grid Layout</h3>
+                <p>This layout uses CSS Grid for responsive design with Flexbox fallback.</p>
+                <div class="feature-demo">
+                    <p>Grid is supported in modern browsers. Fallback to Flexbox for older browsers.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>CSS Custom Properties</h3>
+                <p>Using CSS variables with fallback values for better browser support.</p>
+                <div class="feature-demo">
+                    <p>Primary color: <span style="color: var(--primary-color, #3b82f6);">#3b82f6</span></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Canvas API</h3>
+                <p>HTML5 Canvas with fallback content for unsupported browsers.</p>
+                <div class="feature-demo">
+                    <canvas id="demoCanvas" width="200" height="100" class="canvas-demo">
+                        <p>Your browser doesn't support HTML5 Canvas. Here's a fallback message!</p>
+                    </canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Fetch API</h3>
+                <p>Modern fetch API with XMLHttpRequest fallback.</p>
+                <div class="feature-demo">
+                    <button class="button" onclick="testFetch()">Test Fetch API</button>
+                    <div id="fetchResult"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Intersection Observer</h3>
+                <p>Lazy loading and intersection detection with fallback.</p>
+                <div class="feature-demo">
+                    <div class="lazy-element" style="height: 100px; background: #e2e8f0; margin: 10px 0; display: flex; align-items: center; justify-content: center;">
+                        Scroll to see intersection detection
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Progressive Enhancement</h3>
+                <p>This page works without JavaScript and gracefully enhances with it.</p>
+                <div class="feature-demo">
+                    <p>All features have fallbacks and work in older browsers.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-demo">
+            <h3>Feature Detection Example</h3>
+            <p>This page demonstrates proper feature detection and progressive enhancement patterns.</p>
+            <ul>
+                <li>CSS Grid with Flexbox fallback</li>
+                <li>CSS Custom Properties with fallback values</li>
+                <li>Canvas with fallback content</li>
+                <li>Fetch API with XMLHttpRequest fallback</li>
+                <li>Intersection Observer with scroll event fallback</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Feature detection and progressive enhancement
+        function testFetch() {
+            const resultDiv = document.getElementById('fetchResult');
+            
+            if ('fetch' in window) {
+                resultDiv.innerHTML = '<p style="color: green;">✅ Fetch API is supported!</p>';
+            } else {
+                resultDiv.innerHTML = '<p style="color: orange;">⚠️ Fetch API not supported, would use XMLHttpRequest fallback</p>';
+            }
+        }
+
+        // Canvas demo
+        function initCanvas() {
+            const canvas = document.getElementById('demoCanvas');
+            if (canvas.getContext) {
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(10, 10, 180, 80);
+                ctx.fillStyle = 'white';
+                ctx.font = '16px Arial';
+                ctx.fillText('Canvas Working!', 20, 50);
+            }
+        }
+
+        // Intersection Observer with fallback
+        function initIntersectionObserver() {
+            const lazyElements = document.querySelectorAll('.lazy-element');
+            
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.background = '#10b981';
+                            entry.target.textContent = '✅ Intersection detected!';
+                        }
+                    });
+                });
+                
+                lazyElements.forEach(el => observer.observe(el));
+            } else {
+                // Fallback for older browsers
+                lazyElements.forEach(el => {
+                    el.style.background = '#fbbf24';
+                    el.textContent = '⚠️ Using scroll fallback';
+                });
+            }
+        }
+
+        // Initialize features when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                initCanvas();
+                initIntersectionObserver();
+            });
+        } else {
+            initCanvas();
+            initIntersectionObserver();
+        }
+    </script>
+</body>
+</html>

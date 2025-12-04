@@ -1,0 +1,190 @@
+{
+  "features": [
+    {
+      "name": "canvas",
+      "category": "html5",
+      "baseline": false,
+      "risky": false,
+      "unsupported": true,
+      "browserSupport": {},
+      "supportScore": 0,
+      "recommendations": [
+        {
+          "type": "unknown_feature",
+          "priority": "high",
+          "message": "Feature not found in Browser Compatibility Data",
+          "suggestion": "Verify feature name or check for typos"
+        }
+      ],
+      "polyfills": [],
+      "alternatives": [],
+      "usage": 1,
+      "files": [
+        "demo-baseline/index.html"
+      ]
+    },
+    {
+      "name": "grid",
+      "category": "css",
+      "baseline": false,
+      "risky": false,
+      "unsupported": true,
+      "browserSupport": {},
+      "supportScore": 0,
+      "recommendations": [
+        {
+          "type": "unknown_feature",
+          "priority": "high",
+          "message": "Feature not found in Browser Compatibility Data",
+          "suggestion": "Verify feature name or check for typos"
+        }
+      ],
+      "polyfills": [],
+      "alternatives": [],
+      "usage": 1,
+      "files": [
+        "demo-baseline/index.html"
+      ]
+    },
+    {
+      "name": "variables",
+      "category": "css",
+      "baseline": false,
+      "risky": false,
+      "unsupported": true,
+      "browserSupport": {},
+      "supportScore": 0,
+      "recommendations": [
+        {
+          "type": "unknown_feature",
+          "priority": "high",
+          "message": "Feature not found in Browser Compatibility Data",
+          "suggestion": "Verify feature name or check for typos"
+        }
+      ],
+      "polyfills": [],
+      "alternatives": [],
+      "usage": 1,
+      "files": [
+        "demo-baseline/index.html"
+      ]
+    }
+  ],
+  "summary": {
+    "totalFeatures": 3,
+    "baselineFeatures": 0,
+    "riskyFeatures": 0,
+    "unsupportedFeatures": 3,
+    "browserSupport": {
+      "chrome": {
+        "supported": 0,
+        "partial": 0,
+        "unsupported": 0,
+        "coverage": 0
+      },
+      "firefox": {
+        "supported": 0,
+        "partial": 0,
+        "unsupported": 0,
+        "coverage": 0
+      },
+      "safari": {
+        "supported": 0,
+        "partial": 0,
+        "unsupported": 0,
+        "coverage": 0
+      },
+      "edge": {
+        "supported": 0,
+        "partial": 0,
+        "unsupported": 0,
+        "coverage": 0
+      }
+    }
+  },
+  "recommendations": [
+    {
+      "type": "unsupported_features",
+      "priority": "critical",
+      "title": "Unsupported Features Detected",
+      "message": "Found 3 features with no browser support",
+      "suggestion": "Remove or replace these features with supported alternatives",
+      "features": [
+        "canvas",
+        "grid",
+        "variables"
+      ]
+    },
+    {
+      "type": "browser_coverage",
+      "priority": "medium",
+      "title": "Low Coverage in chrome",
+      "message": "Only 0.0% of features are supported in chrome",
+      "suggestion": "Consider adding polyfills or fallbacks for better browser support",
+      "browser": "chrome",
+      "coverage": 0
+    },
+    {
+      "type": "browser_coverage",
+      "priority": "medium",
+      "title": "Low Coverage in firefox",
+      "message": "Only 0.0% of features are supported in firefox",
+      "suggestion": "Consider adding polyfills or fallbacks for better browser support",
+      "browser": "firefox",
+      "coverage": 0
+    },
+    {
+      "type": "browser_coverage",
+      "priority": "medium",
+      "title": "Low Coverage in safari",
+      "message": "Only 0.0% of features are supported in safari",
+      "suggestion": "Consider adding polyfills or fallbacks for better browser support",
+      "browser": "safari",
+      "coverage": 0
+    },
+    {
+      "type": "browser_coverage",
+      "priority": "medium",
+      "title": "Low Coverage in edge",
+      "message": "Only 0.0% of features are supported in edge",
+      "suggestion": "Consider adding polyfills or fallbacks for better browser support",
+      "browser": "edge",
+      "coverage": 0
+    }
+  ],
+  "supportMatrix": {
+    "browsers": [
+      "chrome",
+      "firefox",
+      "safari",
+      "edge"
+    ],
+    "features": [
+      "canvas",
+      "grid",
+      "variables"
+    ],
+    "support": {
+      "chrome": {
+        "canvas": "unsupported",
+        "grid": "unsupported",
+        "variables": "unsupported"
+      },
+      "firefox": {
+        "canvas": "unsupported",
+        "grid": "unsupported",
+        "variables": "unsupported"
+      },
+      "safari": {
+        "canvas": "unsupported",
+        "grid": "unsupported",
+        "variables": "unsupported"
+      },
+      "edge": {
+        "canvas": "unsupported",
+        "grid": "unsupported",
+        "variables": "unsupported"
+      }
+    }
+  }
+}

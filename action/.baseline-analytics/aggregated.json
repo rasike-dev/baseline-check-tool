@@ -1,0 +1,62 @@
+{
+  "daily": {
+    "2025-10-04": {
+      "scans": 5,
+      "totalFeatures": 0,
+      "baselineFeatures": 0,
+      "riskyFeatures": 0,
+      "unknownFeatures": 0,
+      "avgRiskScore": 0,
+      "avgAdoptionScore": 0
+    }
+  },
+  "overall": {
+    "totalScans": 5,
+    "totalFeatures": 0,
+    "mostUsedFeatures": {},
+    "riskTrend": [
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      }
+    ],
+    "adoptionTrend": [
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      },
+      {
+        "date": "2025-10-04",
+        "score": 0
+      }
+    ]
+  }
+}

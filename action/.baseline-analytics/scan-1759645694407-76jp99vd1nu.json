@@ -1,0 +1,27 @@
+{
+  "scanId": "1759645694407-76jp99vd1nu",
+  "timestamp": "2025-10-05T06:28:14.407Z",
+  "metadata": {
+    "paths": [
+      "src"
+    ],
+    "duration": 37,
+    "version": "2.0.0",
+    "scannedFiles": 14,
+    "processedFiles": 0,
+    "errorCount": 14
+  },
+  "features": {
+    "total": 0,
+    "byStatus": {},
+    "byCategory": {},
+    "byBrowser": {},
+    "riskScore": 0,
+    "adoptionScore": 0
+  },
+  "trends": {
+    "modernFeatures": 0,
+    "legacyFeatures": 0,
+    "experimentalFeatures": 0
+  }
+}

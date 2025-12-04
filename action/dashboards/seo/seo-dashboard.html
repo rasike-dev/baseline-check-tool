@@ -1,0 +1,1249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Dashboard</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .header-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .score-badge {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .score-excellent { background: #10b981; color: white; }
+        .score-good { background: #3b82f6; color: white; }
+        .score-fair { background: #f59e0b; color: white; }
+        .score-poor { background: #ef4444; color: white; }
+        .score-critical { background: #dc2626; color: white; }
+
+        .seo-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .seo-excellent { background: #10b981; color: white; }
+        .seo-good { background: #3b82f6; color: white; }
+        .seo-fair { background: #f59e0b; color: white; }
+        .seo-poor { background: #ef4444; color: white; }
+        .seo-critical { background: #dc2626; color: white; }
+
+        .dashboard-content {
+            display: grid;
+            gap: 30px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .charts-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: visible;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .chart {
+            height: 200px;
+            display: flex;
+            align-items: end;
+            gap: 4px;
+            padding: 10px 0 40px 0;
+            justify-content: space-between;
+            overflow-x: auto;
+            overflow-y: visible;
+        }
+
+        .bar {
+            min-width: 50px;
+            max-width: 80px;
+            flex: 0 0 auto;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            max-width: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .issues-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .issues-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .issue-item {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .issue-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+
+        .issue-item.severity-high { border-left-color: #ef4444; }
+        .issue-item.severity-medium { border-left-color: #f59e0b; }
+        .issue-item.severity-low { border-left-color: #3b82f6; }
+
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .issue-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .issue-severity {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .severity-high { background: #fef2f2; color: #dc2626; }
+        .severity-medium { background: #fffbeb; color: #d97706; }
+        .severity-low { background: #eff6ff; color: #2563eb; }
+
+        .issue-description {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .issue-suggestion {
+            background: var(--suggestion-bg);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .issue-code {
+            background: var(--code-bg);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--code-color);
+            margin-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .issue-fix {
+            background: var(--fix-bg);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--fix-color);
+            overflow-x: auto;
+        }
+
+        .recommendations-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .recommendations-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .recommendation-card {
+            background: var(--bg-color);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .recommendation-priority {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-critical { background: #fef2f2; color: #dc2626; }
+        .priority-high { background: #fffbeb; color: #d97706; }
+        .priority-medium { background: #eff6ff; color: #2563eb; }
+        .priority-low { background: #f0fdf4; color: #16a34a; }
+
+        .recommendation-description {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .recommendation-actions {
+            margin-bottom: 15px;
+        }
+
+        .actions-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .actions-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .actions-list li {
+            padding: 4px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .actions-list li:before {
+            content: "✓";
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .code-example {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .code-before {
+            color: #ef4444;
+            margin-bottom: 10px;
+        }
+
+        .code-after {
+            color: #10b981;
+        }
+
+        .code-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+        }
+
+        /* Dark theme */
+        .dark {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-color: #3b82f6;
+            --primary-light: #60a5fa;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --suggestion-bg: #1e293b;
+            --code-bg: #0f172a;
+            --code-color: #f1f5f9;
+            --fix-bg: #064e3b;
+            --fix-color: #10b981;
+        }
+
+        /* Light theme */
+        .light {
+            --bg-color: #ffffff;
+            --card-bg: #f8fafc;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --primary-color: #3b82f6;
+            --primary-light: #60a5fa;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --suggestion-bg: #f1f5f9;
+            --code-bg: #f8fafc;
+            --code-color: #1e293b;
+            --fix-bg: #ecfdf5;
+            --fix-color: #059669;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 10px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+    </style>
+</head>
+<body class="dark">
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1>🔍 SEO Analysis Dashboard</h1>
+            <div class="header-info">
+                <span class="score-badge score-critical">
+                    0/100
+                </span>
+                <span class="seo-badge seo-fair">
+                    Fair
+                </span>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">0</div>
+                <div class="metric-label">SEO Score</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">14</div>
+                <div class="metric-label">Total Issues</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">3</div>
+                <div class="metric-label">Critical Issues</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">6</div>
+                <div class="metric-label">Medium Issues</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">5</div>
+                <div class="metric-label">Low Issues</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">Fair</div>
+                <div class="metric-label">SEO Level</div>
+            </div>
+        </div>
+    
+            
+        <div class="charts-section">
+            <h2 class="section-title">📊 SEO Analysis</h2>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Issues by Severity</div>
+                    <div class="chart" id="severity-chart">
+                        <!-- Charts will be generated by JavaScript -->
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Issues by Category</div>
+                    <div class="chart" id="category-chart">
+                        <!-- Charts will be generated by JavaScript -->
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">SEO Score Distribution</div>
+                    <div class="chart" id="score-chart">
+                        <!-- Charts will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+            
+        <div class="issues-section">
+            <h2 class="section-title">🔍 SEO Issues (14 found)</h2>
+            <div class="issues-list">
+                
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color);">
+                Critical Issues (3)
+            </h3>
+            
+        <div class="issue-item severity-high">
+            <div class="issue-header">
+                <div class="issue-title">Missing meta description</div>
+                <div class="issue-severity severity-high">high</div>
+            </div>
+            <div class="issue-description">Page missing meta description for SEO</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add meta description tag
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <meta name="description" content="Page description">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> High | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-high">
+            <div class="issue-header">
+                <div class="issue-title">Missing viewport meta tag</div>
+                <div class="issue-severity severity-high">high</div>
+            </div>
+            <div class="issue-description">Page missing viewport meta tag for mobile optimization</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add viewport meta tag
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> High | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-high">
+            <div class="issue-header">
+                <div class="issue-title">Missing viewport meta tag</div>
+                <div class="issue-severity severity-high">high</div>
+            </div>
+            <div class="issue-description">Page missing viewport meta tag for mobile optimization</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add viewport meta tag for mobile
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> High | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        </div>
+    
+                
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color);">
+                Medium Issues (6)
+            </h3>
+            
+        <div class="issue-item severity-medium">
+            <div class="issue-header">
+                <div class="issue-title">Missing canonical URL</div>
+                <div class="issue-severity severity-medium">medium</div>
+            </div>
+            <div class="issue-description">Page missing canonical URL to prevent duplicate content</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add canonical URL tag
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <link rel="canonical" href="https://example.com/page">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Medium | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-medium">
+            <div class="issue-header">
+                <div class="issue-title">Missing Open Graph tags</div>
+                <div class="issue-severity severity-medium">medium</div>
+            </div>
+            <div class="issue-description">Page missing Open Graph tags for social media sharing</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add Open Graph meta tags
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <meta property="og:title" content="Page Title">
+<meta property="og:description" content="Page description">
+<meta property="og:type" content="website">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Medium | 
+                <strong>Effort:</strong> Medium | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-medium">
+            <div class="issue-header">
+                <div class="issue-title">Insufficient content</div>
+                <div class="issue-severity severity-medium">medium</div>
+            </div>
+            <div class="issue-description">Page has very little text content (less than 300 characters)</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add more valuable content to the page
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> Short content
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> Write at least 300-500 words of quality content
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Medium | 
+                <strong>Effort:</strong> High | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 1
+            </div>
+        </div>
+    
+        <div class="issue-item severity-medium">
+            <div class="issue-header">
+                <div class="issue-title">Potential keyword stuffing</div>
+                <div class="issue-severity severity-medium">medium</div>
+            </div>
+            <div class="issue-description">Some words appear too frequently in the content</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Reduce keyword density to avoid over-optimization
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> High frequency words
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> Aim for 1-3% keyword density, use synonyms and related terms
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Medium | 
+                <strong>Effort:</strong> Medium | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 1
+            </div>
+        </div>
+    
+        <div class="issue-item severity-medium">
+            <div class="issue-header">
+                <div class="issue-title">Missing structured data</div>
+                <div class="issue-severity severity-medium">medium</div>
+            </div>
+            <div class="issue-description">Page missing structured data (JSON-LD) for rich snippets</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add structured data markup
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage"}</script>
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Medium | 
+                <strong>Effort:</strong> High | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-medium">
+            <div class="issue-header">
+                <div class="issue-title">No internal links</div>
+                <div class="issue-severity severity-medium">medium</div>
+            </div>
+            <div class="issue-description">Page has no internal links to other pages</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add internal links to related pages
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> No internal links
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> Link to other relevant pages on your site
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Medium | 
+                <strong>Effort:</strong> Medium | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 1
+            </div>
+        </div>
+    
+        </div>
+    
+                
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color);">
+                Low Issues (5)
+            </h3>
+            
+        <div class="issue-item severity-low">
+            <div class="issue-header">
+                <div class="issue-title">Missing robots meta tag</div>
+                <div class="issue-severity severity-low">low</div>
+            </div>
+            <div class="issue-description">Page missing robots meta tag for search engine instructions</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add robots meta tag if needed
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <meta name="robots" content="index, follow">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Low | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-low">
+            <div class="issue-header">
+                <div class="issue-title">Missing Twitter Card tags</div>
+                <div class="issue-severity severity-low">low</div>
+            </div>
+            <div class="issue-description">Page missing Twitter Card tags for social media sharing</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add Twitter Card meta tags
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Page Title">
+<meta name="twitter:description" content="Page description">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Low | 
+                <strong>Effort:</strong> Medium | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-low">
+            <div class="issue-header">
+                <div class="issue-title">Missing sitemap reference</div>
+                <div class="issue-severity severity-low">low</div>
+            </div>
+            <div class="issue-description">Page missing sitemap reference in robots.txt or meta tags</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add sitemap reference
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> Add sitemap.xml to robots.txt or reference in meta tags
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Low | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-low">
+            <div class="issue-header">
+                <div class="issue-title">Missing preload hints</div>
+                <div class="issue-severity severity-low">low</div>
+            </div>
+            <div class="issue-description">Page missing preload hints for critical resources</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Add preload hints for critical resources
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <head>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> <link rel="preload" href="critical.css" as="style">
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Low | 
+                <strong>Effort:</strong> Medium | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 3
+            </div>
+        </div>
+    
+        <div class="issue-item severity-low">
+            <div class="issue-header">
+                <div class="issue-title">Title tag too short</div>
+                <div class="issue-severity severity-low">low</div>
+            </div>
+            <div class="issue-description">Title tag is shorter than recommended 30 characters</div>
+            <div class="issue-suggestion">
+                <strong>Suggestion:</strong> Expand title tag to 30-60 characters
+            </div>
+            <div class="issue-code">
+                <strong>Code:</strong> <title>Test Page</title>
+            </div>
+            <div class="issue-fix">
+                <strong>Fix:</strong> Add more descriptive words to title
+            </div>
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> Low | 
+                <strong>Effort:</strong> Low | 
+                <strong>File:</strong> test-seo-temp/index.html | 
+                <strong>Line:</strong> 4
+            </div>
+        </div>
+    
+        </div>
+    
+            </div>
+        </div>
+    
+            
+        <div class="recommendations-section">
+            <h2 class="section-title">💡 SEO Recommendations</h2>
+            <div class="recommendations-grid">
+                
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color);">
+                Critical Priority (2)
+            </h3>
+            
+        <div class="recommendation-card">
+            <div class="recommendation-header">
+                <div class="recommendation-title">Add Meta Descriptions</div>
+                <div class="recommendation-priority priority-critical">critical</div>
+            </div>
+            <div class="recommendation-description">Meta descriptions appear in search results and influence click-through rates</div>
+            <div class="recommendation-actions">
+                <div class="actions-title">Actions to take:</div>
+                <ul class="actions-list">
+                    <li>Add unique meta descriptions to all pages</li><li>Include primary keywords naturally</li><li>Keep descriptions between 120-160 characters</li><li>Write compelling descriptions that encourage clicks</li>
+                </ul>
+            </div>
+            
+                <div class="code-example">
+                    <div class="code-label">Before:</div>
+                    <div class="code-before"><head>
+  <title>Page Title</title>
+</head></div>
+                    <div class="code-label">After:</div>
+                    <div class="code-after"><head>
+  <title>Page Title</title>
+  <meta name="description" content="Page description with keywords">
+</head></div>
+                </div>
+            
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> high | 
+                <strong>Effort:</strong> low | 
+                <strong>Issues:</strong> 1
+            </div>
+        </div>
+    
+        <div class="recommendation-card">
+            <div class="recommendation-header">
+                <div class="recommendation-title">Add Viewport Meta Tag</div>
+                <div class="recommendation-priority priority-critical">critical</div>
+            </div>
+            <div class="recommendation-description">Viewport meta tag is essential for mobile SEO and user experience</div>
+            <div class="recommendation-actions">
+                <div class="actions-title">Actions to take:</div>
+                <ul class="actions-list">
+                    <li>Add viewport meta tag to all pages</li><li>Use responsive design principles</li><li>Test on various device sizes</li><li>Ensure content is readable without horizontal scrolling</li>
+                </ul>
+            </div>
+            
+                <div class="code-example">
+                    <div class="code-label">Before:</div>
+                    <div class="code-before"><head>
+  <title>Page Title</title>
+</head></div>
+                    <div class="code-label">After:</div>
+                    <div class="code-after"><head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title</title>
+</head></div>
+                </div>
+            
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> high | 
+                <strong>Effort:</strong> low | 
+                <strong>Issues:</strong> 2
+            </div>
+        </div>
+    
+        </div>
+    
+                
+                
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color);">
+                Medium Priority (1)
+            </h3>
+            
+        <div class="recommendation-card">
+            <div class="recommendation-header">
+                <div class="recommendation-title">Add More Content</div>
+                <div class="recommendation-priority priority-medium">medium</div>
+            </div>
+            <div class="recommendation-description">Pages with more content tend to rank better in search results</div>
+            <div class="recommendation-actions">
+                <div class="actions-title">Actions to take:</div>
+                <ul class="actions-list">
+                    <li>Add at least 300-500 words of quality content</li><li>Include relevant keywords naturally</li><li>Provide valuable information to users</li><li>Use headings to organize content</li>
+                </ul>
+            </div>
+            
+                <div class="code-example">
+                    <div class="code-label">Before:</div>
+                    <div class="code-before"><body>
+  <h1>Title</h1>
+  <p>Short content.</p>
+</body></div>
+                    <div class="code-label">After:</div>
+                    <div class="code-after"><body>
+  <h1>Title</h1>
+  <p>Detailed, valuable content that provides comprehensive information about the topic and includes relevant keywords naturally throughout the text.</p>
+  <h2>Subsection</h2>
+  <p>More detailed content...</p>
+</body></div>
+                </div>
+            
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> medium | 
+                <strong>Effort:</strong> high | 
+                <strong>Issues:</strong> 1
+            </div>
+        </div>
+    
+        </div>
+    
+                
+        <div style="margin-bottom: 30px;">
+            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color);">
+                Low Priority (2)
+            </h3>
+            
+        <div class="recommendation-card">
+            <div class="recommendation-header">
+                <div class="recommendation-title">Add Robots Meta Tag</div>
+                <div class="recommendation-priority priority-low">low</div>
+            </div>
+            <div class="recommendation-description">Robots meta tag provides instructions to search engines</div>
+            <div class="recommendation-actions">
+                <div class="actions-title">Actions to take:</div>
+                <ul class="actions-list">
+                    <li>Add robots meta tag if needed</li><li>Use "index, follow" for most pages</li><li>Use "noindex" for pages you don't want indexed</li><li>Consider using robots.txt for site-wide instructions</li>
+                </ul>
+            </div>
+            
+                <div class="code-example">
+                    <div class="code-label">Before:</div>
+                    <div class="code-before"><head>
+  <title>Page Title</title>
+</head></div>
+                    <div class="code-label">After:</div>
+                    <div class="code-after"><head>
+  <title>Page Title</title>
+  <meta name="robots" content="index, follow">
+</head></div>
+                </div>
+            
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> low | 
+                <strong>Effort:</strong> low | 
+                <strong>Issues:</strong> 1
+            </div>
+        </div>
+    
+        <div class="recommendation-card">
+            <div class="recommendation-header">
+                <div class="recommendation-title">Add Twitter Card Tags</div>
+                <div class="recommendation-priority priority-low">low</div>
+            </div>
+            <div class="recommendation-description">Twitter Cards improve social media sharing appearance</div>
+            <div class="recommendation-actions">
+                <div class="actions-title">Actions to take:</div>
+                <ul class="actions-list">
+                    <li>Add Twitter Card meta tags</li><li>Include twitter:card, twitter:title, twitter:description</li><li>Add twitter:image for visual appeal</li><li>Test with Twitter Card Validator</li>
+                </ul>
+            </div>
+            
+                <div class="code-example">
+                    <div class="code-label">Before:</div>
+                    <div class="code-before"><head>
+  <title>Page Title</title>
+</head></div>
+                    <div class="code-label">After:</div>
+                    <div class="code-after"><head>
+  <title>Page Title</title>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Page Title">
+  <meta name="twitter:description" content="Page description">
+</head></div>
+                </div>
+            
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Impact:</strong> low | 
+                <strong>Effort:</strong> medium | 
+                <strong>Issues:</strong> 1
+            </div>
+        </div>
+    
+        </div>
+    
+            </div>
+        </div>
+    
+        </div>
+    </div>
+
+    <script>
+        // Sample SEO data
+        const seoData = {
+            issues: {
+                high: 3,
+                medium: 6,
+                low: 5
+            },
+            categories: {
+                technical_seo: 6,
+                content_seo: 2,
+                performance_seo: 2,
+                mobile_seo: 1,
+                schema_markup: 1,
+                meta_tags: 1,
+                internal_linking: 1
+            },
+            scoreDistribution: {
+                '0-40': 0,
+                '41-60': 0,
+                '61-75': 0,
+                '76-90': 0,
+                '91-100': 0
+            }
+        };
+
+        function generateCharts() {
+            generateSeverityChart();
+            generateCategoryChart();
+            generateScoreChart();
+        }
+
+        function generateSeverityChart() {
+            const container = document.getElementById('severity-chart');
+            container.innerHTML = '';
+            
+            const maxValue = Math.max(...Object.values(seoData.issues));
+            
+            Object.entries(seoData.issues).forEach(([severity, count]) => {
+                const height = (count / maxValue) * 100;
+                const color = severity === 'high' ? '#ef4444' : 
+                             severity === 'medium' ? '#f59e0b' : '#3b82f6';
+                
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.cssText = `height: ${height}%; background: ${color};`;
+                bar.innerHTML = `
+                    <div class="bar-value">${count}</div>
+                    <div class="bar-label">${severity.charAt(0).toUpperCase() + severity.slice(1)}</div>
+                `;
+                container.appendChild(bar);
+            });
+        }
+
+        function generateCategoryChart() {
+            const container = document.getElementById('category-chart');
+            container.innerHTML = '';
+            
+            const maxValue = Math.max(...Object.values(seoData.categories));
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#3b82f6'];
+            let colorIndex = 0;
+            
+            // Shortened category labels to prevent overlap
+            const categoryLabels = {
+                'technical_seo': 'Technical',
+                'content_seo': 'Content',
+                'performance_seo': 'Performance',
+                'mobile_seo': 'Mobile',
+                'schema_markup': 'Schema',
+                'meta_tags': 'Meta Tags',
+                'internal_linking': 'Links'
+            };
+            
+            Object.entries(seoData.categories).forEach(([category, count]) => {
+                const height = (count / maxValue) * 100;
+                const color = colors[colorIndex % colors.length];
+                const label = categoryLabels[category] || category.replace('_', ' ');
+                
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.cssText = `height: ${height}%; background: ${color}; min-width: 60px; margin: 0 2px;`;
+                bar.innerHTML = `
+                    <div class="bar-value">${count}</div>
+                    <div class="bar-label" style="font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${label}</div>
+                `;
+                container.appendChild(bar);
+                colorIndex++;
+            });
+        }
+
+        function generateScoreChart() {
+            const container = document.getElementById('score-chart');
+            container.innerHTML = '';
+            
+            const maxValue = Math.max(...Object.values(seoData.scoreDistribution));
+            const colors = ['#dc2626', '#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
+            
+            Object.entries(seoData.scoreDistribution).forEach(([range, count], index) => {
+                const height = maxValue > 0 ? (count / maxValue) * 100 : 0;
+                const color = colors[index];
+                
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.cssText = `height: ${height}%; background: ${color};`;
+                bar.innerHTML = `
+                    <div class="bar-value">${count}</div>
+                    <div class="bar-label">${range}</div>
+                `;
+                container.appendChild(bar);
+            });
+        }
+        
+        // Dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate charts
+            generateCharts();
+            
+            // Add hover effects to charts
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                bar.addEventListener('mouseenter', function() {
+                    this.style.opacity = '0.8';
+                    this.style.transform = 'scaleY(1.05)';
+                });
+                
+                bar.addEventListener('mouseleave', function() {
+                    this.style.opacity = '1';
+                    this.style.transform = 'scaleY(1)';
+                });
+            });
+
+            // Add click handlers for issue items
+            const issueItems = document.querySelectorAll('.issue-item');
+            issueItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'translateX(10px)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateX(5px)';
+                    }, 200);
+                });
+            });
+
+            // Add click handlers for recommendation cards
+            const recCards = document.querySelectorAll('.recommendation-card');
+            recCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-4px)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-2px)';
+                    }, 200);
+                });
+            });
+        });
+    
+    </script>
+</body>
+</html>

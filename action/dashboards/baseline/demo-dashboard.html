@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseline Analysis Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: #2d2d2d;
+            border-radius: 12px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+
+        .score-card {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #404040;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-number {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+
+        .score-excellent { color: #10b981; }
+        .score-good { color: #3b82f6; }
+        .score-fair { color: #f59e0b; }
+        .score-poor { color: #ef4444; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #404040;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #404040;
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #cccccc;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .recommendations {
+            margin-top: 30px;
+        }
+
+        .recommendation {
+            background: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommendation h4 {
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .recommendation p {
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+
+        .recommendation .priority {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .priority-critical { background: #fee2e2; color: #dc2626; }
+        .priority-high { background: #fef3c7; color: #d97706; }
+        .priority-medium { background: #dbeafe; color: #2563eb; }
+        .priority-low { background: #d1fae5; color: #059669; }
+
+        .chart-container {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart {
+            width: 100%;
+            height: 300px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Baseline Analysis Dashboard</h1>
+            <p>Comprehensive baseline compliance and browser support analysis</p>
+        </div>
+
+        <div class="score-card">
+            <div class="score-display">
+                <div class="score-number score-poor">
+                    0
+                </div>
+                <div class="score-label">Baseline Compliance Score</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>🌐 Browser Support</h3>
+                <div class="stat">
+                    <span class="stat-label">Baseline Features</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Risky Features</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Unsupported Features</span>
+                    <span class="stat-value">3</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔧 Polyfill Recommendations</h3>
+                <div class="stat">
+                    <span class="stat-label">Total Polyfills</span>
+                    <span class="stat-value">2</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Estimated Size</span>
+                    <span class="stat-value">56 KB</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Maintenance Level</span>
+                    <span class="stat-value">low</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📈 Progressive Enhancement</h3>
+                <div class="stat">
+                    <span class="stat-label">Progressive Files</span>
+                    <span class="stat-value">1</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Fallback Issues</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Overall Score</span>
+                    <span class="stat-value">88/100</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>📊 Compliance Breakdown</h3>
+            <div class="chart">
+                <div>
+                    <div>Browser Support: 0.0/100</div>
+                    <div>Feature Stability: 0.0/100</div>
+                    <div>Performance: 0.0/100</div>
+                    <div>Accessibility: 0.0/100</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recommendations">
+            <h3>💡 Recommendations</h3>
+            
+        <div class="recommendation">
+            <h4>Polyfill Recommendations</h4>
+            <p>2 polyfills recommended</p>
+            <p><strong>Suggestion:</strong> Consider adding recommended polyfills for better compatibility</p>
+            <span class="priority priority-medium">medium</span>
+        </div>
+    
+        <div class="recommendation">
+            <h4>Baseline Compliance Issues</h4>
+            <p>Compliance score: 0/100</p>
+            <p><strong>Suggestion:</strong> Address compliance issues for better baseline support</p>
+            <span class="priority priority-critical">critical</span>
+        </div>
+    
+        </div>
+    </div>
+</body>
+</html>

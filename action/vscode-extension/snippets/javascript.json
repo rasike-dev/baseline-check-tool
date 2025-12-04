@@ -1,0 +1,94 @@
+{
+  "Baseline Check Comment": {
+    "prefix": "baseline-check",
+    "body": [
+      "// @baseline-check: ${1:feature-name}",
+      "// Status: ${2|baseline_like,risky,unknown|}",
+      "// Browser Support: ${3:Chrome 42+, Firefox 39+, Safari 10.1+}",
+      "// MDN: ${4:https://developer.mozilla.org/en-US/docs/Web/API/feature}"
+    ],
+    "description": "Add baseline compatibility comment"
+  },
+  "Feature Detection": {
+    "prefix": "feature-detect",
+    "body": [
+      "if (typeof ${1:feature} !== 'undefined') {",
+      "  // Feature is supported",
+      "  ${2:// Use the feature}",
+      "} else {",
+      "  // Feature is not supported - provide fallback",
+      "  ${3:// Fallback implementation}",
+      "}"
+    ],
+    "description": "Feature detection pattern"
+  },
+  "Modern JavaScript Check": {
+    "prefix": "modern-js",
+    "body": [
+      "// Check for modern JavaScript features",
+      "const hasOptionalChaining = typeof Symbol !== 'undefined' && Symbol.optionalChaining;",
+      "const hasNullishCoalescing = typeof Symbol !== 'undefined' && Symbol.nullishCoalescing;",
+      "",
+      "if (hasOptionalChaining && hasNullishCoalescing) {",
+      "  // Use modern syntax",
+      "  ${1:// Modern code here}",
+      "} else {",
+      "  // Use fallback syntax",
+      "  ${2:// Fallback code here}",
+      "}"
+    ],
+    "description": "Modern JavaScript feature detection"
+  },
+  "Async/Await with Fallback": {
+    "prefix": "async-fallback",
+    "body": [
+      "// @baseline-check: async/await",
+      "// Status: baseline_like",
+      "// Browser Support: Chrome 55+, Firefox 52+, Safari 10.1+",
+      "",
+      "async function ${1:functionName}() {",
+      "  try {",
+      "    ${2:// Async operations}",
+      "  } catch (error) {",
+      "    console.error('Error:', error);",
+      "  }",
+      "}",
+      "",
+      "// Fallback for older browsers",
+      "if (typeof Promise !== 'undefined' && Promise.all) {",
+      "  ${1:functionName}();",
+      "} else {",
+      "  // Use callback-based approach",
+      "  ${3:// Callback fallback}",
+      "}"
+    ],
+    "description": "Async/await with Promise fallback"
+  },
+  "Fetch API with Fallback": {
+    "prefix": "fetch-fallback",
+    "body": [
+      "// @baseline-check: fetch",
+      "// Status: baseline_like",
+      "// Browser Support: Chrome 42+, Firefox 39+, Safari 10.1+",
+      "",
+      "function ${1:fetchData}(url) {",
+      "  if (typeof fetch !== 'undefined') {",
+      "    // Use modern fetch API",
+      "    return fetch(url)",
+      "      .then(response => response.json())",
+      "      .catch(error => console.error('Fetch error:', error));",
+      "  } else {",
+      "    // Fallback to XMLHttpRequest",
+      "    return new Promise((resolve, reject) => {",
+      "      const xhr = new XMLHttpRequest();",
+      "      xhr.open('GET', url);",
+      "      xhr.onload = () => resolve(JSON.parse(xhr.responseText));",
+      "      xhr.onerror = () => reject(xhr.statusText);",
+      "      xhr.send();",
+      "    });",
+      "  }",
+      "}"
+    ],
+    "description": "Fetch API with XMLHttpRequest fallback"
+  }
+}

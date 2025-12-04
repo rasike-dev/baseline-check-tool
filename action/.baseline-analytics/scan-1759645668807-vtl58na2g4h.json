@@ -1,0 +1,27 @@
+{
+  "scanId": "1759645668807-vtl58na2g4h",
+  "timestamp": "2025-10-05T06:27:48.807Z",
+  "metadata": {
+    "paths": [
+      "src"
+    ],
+    "duration": 36,
+    "version": "2.0.0",
+    "scannedFiles": 14,
+    "processedFiles": 0,
+    "errorCount": 14
+  },
+  "features": {
+    "total": 0,
+    "byStatus": {},
+    "byCategory": {},
+    "byBrowser": {},
+    "riskScore": 0,
+    "adoptionScore": 0
+  },
+  "trends": {
+    "modernFeatures": 0,
+    "legacyFeatures": 0,
+    "experimentalFeatures": 0
+  }
+}

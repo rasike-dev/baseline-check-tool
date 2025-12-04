@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Baseline Compatibility</title>
+    <style>
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav {
+            background: #f8f9fa;
+            padding: 15px 40px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .nav-link {
+            padding: 10px 20px;
+            background: white;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .nav-link:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .nav-link.active {
+            background: #667eea;
+            color: white;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #fff;
+        }
+        .stat-card {
+            padding: 25px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card.baseline { border-color: #51cf66; }
+        .stat-card.risky { border-color: #fab005; }
+        .stat-card.unknown { border-color: #868e96; }
+        .stat-card.total { border-color: #339af0; }
+        .stat-number { font-size: 2.5em; font-weight: bold; margin-bottom: 10px; color: #333; }
+        .stat-label { font-size: 1em; color: #666; }
+        .section {
+            padding: 40px;
+            background: #fff;
+        }
+        .section:nth-child(even) { background: #f8f9fa; }
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .feature-grid {
+            display: grid;
+            gap: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .feature-item {
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid;
+            transition: transform 0.2s;
+        }
+        .feature-item:hover { transform: translateX(5px); }
+        .feature-item.baseline { border-color: #51cf66; background: #ebfbee; }
+        .feature-item.risky { border-color: #fab005; background: #fff9db; }
+        .feature-item.unknown { border-color: #868e96; background: #f1f3f5; }
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .feature-name { font-weight: bold; font-size: 1.1em; }
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .status-badge.baseline { background: #51cf66; }
+        .status-badge.risky { background: #fab005; }
+        .status-badge.unknown { background: #868e96; }
+        .feature-details { color: #495057; margin-top: 8px; }
+        .feature-files {
+            color: #868e96;
+            font-size: 0.9em;
+            margin-top: 8px;
+            font-family: 'Monaco', monospace;
+        }
+        .metadata-box {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+        .metadata-box p { margin: 5px 0; }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 Baseline Compatibility Analysis</h1>
+            <p>Browser Feature Detection & Compatibility Report</p>
+        </div>
+        
+        <div class="nav"><a href="index.html" class="nav-link">🏠 Home</a><a href="compatibility.html" class="nav-link active">🌐 Compatibility</a><a href="performance.html" class="nav-link">⚡ Performance</a><a href="security.html" class="nav-link">🔒 Security</a><a href="accessibility.html" class="nav-link">♿ Accessibility</a><a href="seo.html" class="nav-link">🔍 SEO</a><a href="bundle.html" class="nav-link">📦 Bundle</a></div>
+        
+        <div class="stats">
+            <div class="stat-card baseline">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Baseline Features</div>
+            </div>
+            <div class="stat-card risky">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Risky Features</div>
+            </div>
+            <div class="stat-card unknown">
+                <div class="stat-number">76</div>
+                <div class="stat-label">Unknown Features</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-number">84</div>
+                <div class="stat-label">Total Features</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">🔍 Detected Features (84 found)</h2>
+            <div class="feature-grid">
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">React.Fragment</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 baseline-check.config.js, src/integrations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">React.Suspense</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 baseline-check.config.js, src/integrations.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">React.lazy</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 6 times</div>
+                    <div class="feature-files">📁 baseline-check.config.js, src/integrations.js, src/bundle/bundle-recommendations.js, src/performance/performance-recommendations.js, vscode-extension/src/baseline-check/bundle/bundle-recommendations.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">React.memo</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 baseline-check.config.js, src/integrations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Math Functions</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 76 times</div>
+                    <div class="feature-files">📁 demo-monitoring/good-code.js, demo-monitoring/problematic-code.js, demo-monitoring/react-component.jsx, demo-monitoring/styles.css, src/cache.js, src/cli.js, src/dashboard-generator.js, src/examples.js, src/scan.js, src/ui.js, test/baseline.test.js, test/scan.test.js, dashboards/static/enhanced-styles.css, dashboards/static/styles.css, src/ai/ai-analyzer.js, src/ai/ai-code-fixer.js, src/ai/ai-learning.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-dashboard.js, src/accessibility/index.js, src/baseline/baseline-compliance.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/baseline/polyfill-recommender.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-analyzer.js, src/bundle/bundle-dashboard.js, src/bundle/bundle-optimizer.js, src/commands/enhanced-performance-command.js, src/features/feature-detector.js, src/monitoring/realtime-dashboard.js, src/monitoring/realtime-monitor.js, src/performance/index.js, src/performance/performance-analyzer.js, src/performance/performance-dashboard.js, src/performance/performance-optimizer.js, src/reporters/summary.js, src/seo/index.js, src/seo/seo-analyzer.js, src/seo/seo-dashboard.js, src/security/security-analyzer.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/accessibility/index.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/feature-detector.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/bundle/bundle-optimizer.js, vscode-extension/src/baseline-check/baseline/baseline-compliance.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/performance/index.js, vscode-extension/src/baseline-check/performance/performance-analyzer.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/seo/index.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item baseline">
+                    <div class="feature-header">
+                        <span class="feature-name">css.grid</span>
+                        <span class="status-badge baseline">BASELINE</span>
+                    </div>
+                    <div class="feature-details">Used 42 times</div>
+                    <div class="feature-files">📁 demo-monitoring/good-code.js, demo-monitoring/styles.css, src/cli.js, src/dashboard-generator.js, src/error-handler.js, src/examples.js, src/interactive.js, test/baseline.test.js, test/migration.test.js, test/scan.test.js, dashboards/static/enhanced-styles.css, dashboards/static/styles.css, src/ai/ai-analyzer.js, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-dashboard.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/bundle/bundle-dashboard.js, src/commands/enhanced-performance-command.js, src/monitoring/realtime-dashboard.js, src/performance/performance-dashboard.js, src/reporters/summary.js, src/seo/seo-dashboard.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.min_max</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 74 times</div>
+                    <div class="feature-files">📁 demo-monitoring/good-code.js, demo-monitoring/problematic-code.js, demo-monitoring/react-component.jsx, demo-monitoring/styles.css, src/cli.js, src/dashboard-generator.js, src/examples.js, src/scan.js, src/ui.js, test/baseline.test.js, dashboards/static/enhanced-styles.css, dashboards/static/styles.css, src/ai/ai-analyzer.js, src/ai/ai-code-fixer.js, src/ai/ai-learning.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-dashboard.js, src/accessibility/index.js, src/baseline/baseline-compliance.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/baseline/polyfill-recommender.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-analyzer.js, src/bundle/bundle-dashboard.js, src/bundle/bundle-optimizer.js, src/commands/enhanced-performance-command.js, src/features/feature-detector.js, src/monitoring/realtime-dashboard.js, src/monitoring/realtime-monitor.js, src/performance/index.js, src/performance/performance-analyzer.js, src/performance/performance-dashboard.js, src/performance/performance-optimizer.js, src/reporters/summary.js, src/seo/index.js, src/seo/seo-analyzer.js, src/seo/seo-dashboard.js, src/security/security-analyzer.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/accessibility/index.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/feature-detector.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/bundle/bundle-optimizer.js, vscode-extension/src/baseline-check/baseline/baseline-compliance.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/performance/index.js, vscode-extension/src/baseline-check/performance/performance-analyzer.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/seo/index.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Focus Management</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 9 times</div>
+                    <div class="feature-files">📁 demo-monitoring/problematic-code.js, demo-monitoring/react-component.jsx, demo-monitoring/styles.css, dashboards/static/enhanced-styles.css, src/accessibility/accessibility-analyzer.js, src/commands/enhanced-performance-command.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item risky">
+                    <div class="feature-header">
+                        <span class="feature-name">Optional Chaining</span>
+                        <span class="status-badge risky">RISKY</span>
+                    </div>
+                    <div class="feature-details">Used 49 times</div>
+                    <div class="feature-files">📁 demo-monitoring/react-component.jsx, src/analytics.js, src/check.js, src/cli.js, src/error-handler.js, src/examples.js, src/interactive.js, src/recommendations.js, src/scan.js, test/scan.test.js, dashboards/static/app.js, src/ai/ai-analyzer.js, src/ai/ai-learning.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-optimizer.js, src/commands/enhanced-performance-command.js, src/features/enhanced-features.js, src/features/feature-detector.js, src/monitoring/realtime-monitor.js, src/performance/performance-optimizer.js, src/reporters/summary.js, src/seo/seo-analyzer.js, src/security/security-analyzer.js, vscode-extension/demo-project/app.js, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/features/feature-detector.js, vscode-extension/src/baseline-check/bundle/bundle-optimizer.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js</div>
+                </div>
+                <div class="feature-item risky">
+                    <div class="feature-header">
+                        <span class="feature-name">Private Fields</span>
+                        <span class="status-badge risky">RISKY</span>
+                    </div>
+                    <div class="feature-details">Used 53 times</div>
+                    <div class="feature-files">📁 demo-monitoring/react-component.jsx, demo-monitoring/styles.css, src/cli.js, src/dashboard-generator.js, src/examples.js, test/baseline.test.js, test/migration.test.js, test/monitoring.test.js, test/performance.test.js, dashboards/static/app.js, dashboards/static/enhanced-styles.css, dashboards/static/styles.css, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-dashboard.js, src/accessibility/accessibility-recommendations.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/bundle/bundle-dashboard.js, src/bundle/bundle-recommendations.js, src/commands/enhanced-performance-command.js, src/features/enhanced-features.js, src/monitoring/alert-system.js, src/monitoring/realtime-dashboard.js, src/performance/performance-dashboard.js, src/performance/performance-recommendations.js, src/reporters/summary.js, src/seo/seo-dashboard.js, src/security/security-dashboard.js, vscode-extension/demo-project/app.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/accessibility/accessibility-recommendations.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/bundle/bundle-recommendations.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/monitoring/alert-system.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item baseline">
+                    <div class="feature-header">
+                        <span class="feature-name">window.fetch</span>
+                        <span class="status-badge baseline">BASELINE</span>
+                    </div>
+                    <div class="feature-details">Used 18 times</div>
+                    <div class="feature-files">📁 demo-monitoring/react-component.jsx, src/error-handler.js, test/ai.test.js, test/baseline.test.js, test/migration.test.js, test/scan.test.js, dashboards/static/app.js, src/ai/ai-analyzer.js, src/baseline/migration-assistant.js, src/baseline/polyfill-recommender.js, src/bundle/bundle-analyzer.js, src/security/security-recommendations.js, vscode-extension/demo-project/app.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js, vscode-extension/src/baseline-check/security/security-recommendations.js</div>
+                </div>
+                <div class="feature-item risky">
+                    <div class="feature-header">
+                        <span class="feature-name">Optional chaining</span>
+                        <span class="status-badge risky">RISKY</span>
+                    </div>
+                    <div class="feature-details">Used 49 times</div>
+                    <div class="feature-files">📁 demo-monitoring/react-component.jsx, src/analytics.js, src/check.js, src/cli.js, src/error-handler.js, src/examples.js, src/interactive.js, src/recommendations.js, src/scan.js, test/scan.test.js, dashboards/static/app.js, src/ai/ai-analyzer.js, src/ai/ai-learning.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-optimizer.js, src/commands/enhanced-performance-command.js, src/features/enhanced-features.js, src/features/feature-detector.js, src/monitoring/realtime-monitor.js, src/performance/performance-optimizer.js, src/reporters/summary.js, src/seo/seo-analyzer.js, src/security/security-analyzer.js, vscode-extension/demo-project/app.js, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/features/feature-detector.js, vscode-extension/src/baseline-check/bundle/bundle-optimizer.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">React.useEffect</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 demo-monitoring/react-component.jsx, src/examples.js, src/performance/performance-recommendations.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">React.useState</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 demo-monitoring/react-component.jsx, src/examples.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Grid (advanced)</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 demo-monitoring/styles.css, src/baseline/polyfill-recommender.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Subgrid</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 3 times</div>
+                    <div class="feature-files">📁 demo-monitoring/styles.css, src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Color Contrast</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 33 times</div>
+                    <div class="feature-files">📁 demo-monitoring/styles.css, src/cli.js, src/dashboard-generator.js, src/examples.js, test/baseline.test.js, dashboards/static/enhanced-styles.css, dashboards/static/styles.css, src/ai/ai-recommendations.js, src/accessibility/accessibility-dashboard.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/bundle/bundle-dashboard.js, src/commands/enhanced-performance-command.js, src/monitoring/realtime-dashboard.js, src/performance/performance-dashboard.js, src/reporters/summary.js, src/seo/seo-dashboard.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.backdrop_filter</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 3 times</div>
+                    <div class="feature-files">📁 demo-monitoring/styles.css, dashboards/static/enhanced-styles.css, src/commands/enhanced-performance-command.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.scroll_behavior</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 1 time</div>
+                    <div class="feature-files">📁 demo-monitoring/styles.css</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Nesting</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 60 times</div>
+                    <div class="feature-files">📁 src/analytics.js, src/check.js, src/cli.js, src/config.js, src/dashboard-generator.js, src/examples.js, src/ui.js, test/baseline.test.js, dashboards/static/app.js, src/ai/ai-analyzer.js, src/ai/ai-code-fixer.js, src/ai/ai-learning.js, src/accessibility/accessibility-analyzer.js, src/accessibility/index.js, src/baseline/baseline-compliance.js, src/baseline/browser-detector.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/polyfill-recommender.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-analyzer.js, src/bundle/bundle-optimizer.js, src/commands/enhanced-performance-command.js, src/features/enhanced-features.js, src/features/feature-detector.js, src/monitoring/alert-system.js, src/monitoring/realtime-monitor.js, src/performance/performance-analyzer.js, src/performance/performance-optimizer.js, src/performance/performance-recommendations.js, src/seo/index.js, src/seo/seo-analyzer.js, src/security/security-analyzer.js, vscode-extension/demo-project/app.js, vscode-extension/src/extension.ts, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/index.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/features/feature-detector.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-optimizer.js, vscode-extension/src/baseline-check/baseline/baseline-compliance.js, vscode-extension/src/baseline-check/baseline/browser-detector.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/alert-system.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/performance/performance-analyzer.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js, vscode-extension/src/baseline-check/seo/index.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js</div>
+                </div>
+                <div class="feature-item risky">
+                    <div class="feature-header">
+                        <span class="feature-name">Logical Assignment</span>
+                        <span class="status-badge risky">RISKY</span>
+                    </div>
+                    <div class="feature-details">Used 98 times</div>
+                    <div class="feature-files">📁 src/analytics.js, src/check.js, src/cli.js, src/config.js, src/dashboard-generator.js, src/error-handler.js, src/examples.js, src/interactive.js, src/recommendations.js, src/scan.js, src/ui.js, test/ai.test.js, test/baseline.test.js, test/enhanced-performance.test.js, test/performance.test.js, test/scan.test.js, dashboards/static/app.js, src/ai/ai-analyzer.js, src/ai/ai-code-fixer.js, src/ai/ai-learning.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-dashboard.js, src/accessibility/accessibility-recommendations.js, src/accessibility/index.js, src/baseline/baseline-compliance.js, src/baseline/browser-detector.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/baseline/polyfill-recommender.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-analyzer.js, src/bundle/bundle-dashboard.js, src/bundle/bundle-optimizer.js, src/bundle/bundle-recommendations.js, src/commands/enhanced-performance-command.js, src/commands/performance-command.js, src/features/enhanced-features.js, src/features/feature-detector.js, src/monitoring/alert-system.js, src/monitoring/realtime-dashboard.js, src/monitoring/realtime-monitor.js, src/performance/performance-analyzer.js, src/performance/performance-dashboard.js, src/performance/performance-optimizer.js, src/performance/performance-recommendations.js, src/reporters/summary.js, src/seo/index.js, src/seo/seo-analyzer.js, src/seo/seo-dashboard.js, src/seo/seo-recommendations.js, src/security/index.js, src/security/security-analyzer.js, src/security/security-dashboard.js, src/security/security-recommendations.js, vscode-extension/demo-project/app.js, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/accessibility/accessibility-recommendations.js, vscode-extension/src/baseline-check/accessibility/index.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/features/feature-detector.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/bundle/bundle-optimizer.js, vscode-extension/src/baseline-check/bundle/bundle-recommendations.js, vscode-extension/src/baseline-check/baseline/baseline-compliance.js, vscode-extension/src/baseline-check/baseline/browser-detector.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/alert-system.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/security/index.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/security/security-recommendations.js, vscode-extension/src/baseline-check/performance/performance-analyzer.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js, vscode-extension/src/baseline-check/seo/index.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js, vscode-extension/src/baseline-check/seo/seo-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Animations API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 18 times</div>
+                    <div class="feature-files">📁 src/check.js, src/scan.js, src/ai/ai-analyzer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/features/enhanced-features.js, src/performance/performance-analyzer.js, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/performance/performance-analyzer.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Resize Observer</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 9 times</div>
+                    <div class="feature-files">📁 src/check.js, src/recommendations.js, src/scan.js, src/baseline/polyfill-recommender.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Components</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 3 times</div>
+                    <div class="feature-files">📁 src/check.js, src/examples.js, vscode-extension/src/baseline-check/check.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Top-level Await</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 34 times</div>
+                    <div class="feature-files">📁 src/check.js, src/cli.js, src/dashboard-generator.js, src/interactive.js, src/scan.js, test/ai.test.js, test/baseline.test.js, test/check.test.js, test/enhanced-performance.test.js, test/monitoring.test.js, test/performance.test.js, test/scan.test.js, test/summary.test.js, dashboards/static/app.js, src/ai/ai-learning.js, src/baseline/progressive-enhancement.js, src/commands/enhanced-performance-command.js, src/monitoring/alert-system.js, src/monitoring/realtime-dashboard.js, src/monitoring/realtime-monitor.js, src/performance/performance-optimizer.js, src/reporters/summary.js, vscode-extension/demo-project/app.js, vscode-extension/src/extension.ts, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/alert-system.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/test/suite/extension.test.ts</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Form Labels</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 17 times</div>
+                    <div class="feature-files">📁 src/check.js, test/accessibility.test.js, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-recommendations.js, src/features/enhanced-features.js, src/security/security-analyzer.js, src/security/security-recommendations.js, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-recommendations.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/security/security-analyzer.js, vscode-extension/src/baseline-check/security/security-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">navigator.clipboard.writeText</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/check.js, src/scan.js, test/scan.test.js, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/scan.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">navigator.clipboard.readText</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/check.js, src/scan.js, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/scan.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">AbortSignal</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/check.js, src/scan.js, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/scan.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Top-level await</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 34 times</div>
+                    <div class="feature-files">📁 src/check.js, src/cli.js, src/dashboard-generator.js, src/interactive.js, src/scan.js, test/ai.test.js, test/baseline.test.js, test/check.test.js, test/enhanced-performance.test.js, test/monitoring.test.js, test/performance.test.js, test/scan.test.js, test/summary.test.js, dashboards/static/app.js, src/ai/ai-learning.js, src/baseline/progressive-enhancement.js, src/commands/enhanced-performance-command.js, src/monitoring/alert-system.js, src/monitoring/realtime-dashboard.js, src/monitoring/realtime-monitor.js, src/performance/performance-optimizer.js, src/reporters/summary.js, vscode-extension/demo-project/app.js, vscode-extension/src/extension.ts, vscode-extension/src/baseline-check/check.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/ai/ai-learning.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/monitoring/alert-system.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-monitor.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/test/suite/extension.test.ts</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Dynamic Import</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 25 times</div>
+                    <div class="feature-files">📁 src/cli.js, src/config.js, src/error-handler.js, src/interactive.js, src/recommendations.js, src/accessibility/index.js, src/baseline/index.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-analyzer.js, src/bundle/bundle-recommendations.js, src/commands/performance-command.js, src/features/enhanced-features.js, src/performance/performance-recommendations.js, src/seo/index.js, src/security/index.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/index.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-recommendations.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/security/index.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js, vscode-extension/src/baseline-check/seo/index.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Dynamic import</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 25 times</div>
+                    <div class="feature-files">📁 src/cli.js, src/config.js, src/error-handler.js, src/interactive.js, src/recommendations.js, src/accessibility/index.js, src/baseline/index.js, src/baseline/progressive-enhancement.js, src/bundle/bundle-analyzer.js, src/bundle/bundle-recommendations.js, src/commands/performance-command.js, src/features/enhanced-features.js, src/performance/performance-recommendations.js, src/seo/index.js, src/security/index.js, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/index.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/bundle/bundle-analyzer.js, vscode-extension/src/baseline-check/bundle/bundle-recommendations.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/security/index.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js, vscode-extension/src/baseline-check/seo/index.js</div>
+                </div>
+                <div class="feature-item baseline">
+                    <div class="feature-header">
+                        <span class="feature-name">css.flexbox</span>
+                        <span class="status-badge baseline">BASELINE</span>
+                    </div>
+                    <div class="feature-details">Used 34 times</div>
+                    <div class="feature-files">📁 src/cli.js, src/dashboard-generator.js, src/error-handler.js, src/examples.js, src/interactive.js, test/baseline.test.js, test/migration.test.js, dashboards/static/enhanced-styles.css, dashboards/static/styles.css, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-dashboard.js, src/baseline/index.js, src/baseline/migration-assistant.js, src/baseline/migration-dashboard.js, src/bundle/bundle-dashboard.js, src/monitoring/realtime-dashboard.js, src/performance/performance-dashboard.js, src/seo/seo-dashboard.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/cli.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/baseline/index.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/migration-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/performance/performance-dashboard.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Custom Properties (advanced)</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 24 times</div>
+                    <div class="feature-files">📁 src/dashboard-generator.js, src/examples.js, test/baseline.test.js, test/scan.test.js, dashboards/static/enhanced-styles.css, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-dashboard.js, src/baseline/migration-assistant.js, src/bundle/bundle-dashboard.js, src/features/enhanced-features.js, src/seo/seo-dashboard.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.custom_properties</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 22 times</div>
+                    <div class="feature-files">📁 src/dashboard-generator.js, src/examples.js, test/baseline.test.js, test/scan.test.js, dashboards/static/enhanced-styles.css, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-dashboard.js, src/baseline/migration-assistant.js, src/bundle/bundle-dashboard.js, src/seo/seo-dashboard.js, src/security/security-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/security/security-dashboard.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Container Queries</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 8 times</div>
+                    <div class="feature-files">📁 src/error-handler.js, src/recommendations.js, src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/demo-project/styles.css, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Nullish Coalescing</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/error-handler.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/demo-project/app.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Nullish coalescing</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/error-handler.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/demo-project/app.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.has_pseudo</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/error-handler.js, src/recommendations.js, test/scan.test.js, vscode-extension/demo-project/styles.css</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.container_queries</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 8 times</div>
+                    <div class="feature-files">📁 src/error-handler.js, src/recommendations.js, src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/demo-project/styles.css, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Template Element</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 3 times</div>
+                    <div class="feature-files">📁 src/examples.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web App Manifest</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 8 times</div>
+                    <div class="feature-files">📁 src/examples.js, src/accessibility/accessibility-analyzer.js, src/features/enhanced-features.js, src/monitoring/realtime-dashboard.js, vscode-extension/demo-project/styles.css, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">IntersectionObserver</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 6 times</div>
+                    <div class="feature-files">📁 src/examples.js, test/baseline.test.js, src/baseline/migration-assistant.js, src/baseline/polyfill-recommender.js, vscode-extension/src/baseline-check/baseline/migration-assistant.js, vscode-extension/src/baseline-check/baseline/polyfill-recommender.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Details/Summary Elements</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Dialog Element</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Array Methods</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/scan.js, vscode-extension/src/baseline-check/scan.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">dialog.element</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">details.element</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">summary.element</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/scan.js, test/scan.test.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/scan.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Form Elements (modern)</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 3 times</div>
+                    <div class="feature-files">📁 test/accessibility.test.js, src/ai/ai-recommendations.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js</div>
+                </div>
+                <div class="feature-item baseline">
+                    <div class="feature-header">
+                        <span class="feature-name">Semantic HTML</span>
+                        <span class="status-badge baseline">BASELINE</span>
+                    </div>
+                    <div class="feature-details">Used 16 times</div>
+                    <div class="feature-files">📁 test/accessibility.test.js, test/baseline.test.js, src/ai/ai-code-fixer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-dashboard.js, src/accessibility/accessibility-recommendations.js, src/bundle/bundle-dashboard.js, src/seo/seo-dashboard.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-dashboard.js, vscode-extension/src/baseline-check/accessibility/accessibility-recommendations.js, vscode-extension/src/baseline-check/ai/ai-code-fixer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/bundle/bundle-dashboard.js, vscode-extension/src/baseline-check/seo/seo-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Alt Text</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 24 times</div>
+                    <div class="feature-files">📁 test/accessibility.test.js, test/baseline.test.js, test/enhanced-performance.test.js, test/seo.test.js, src/ai/ai-analyzer.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-recommendations.js, src/baseline/progressive-enhancement.js, src/features/enhanced-features.js, src/performance/performance-analyzer.js, src/performance/performance-optimizer.js, src/performance/performance-recommendations.js, src/seo/seo-analyzer.js, src/seo/seo-recommendations.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-recommendations.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/baseline/progressive-enhancement.js, vscode-extension/src/baseline-check/performance/performance-analyzer.js, vscode-extension/src/baseline-check/performance/performance-optimizer.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js, vscode-extension/src/baseline-check/seo/seo-analyzer.js, vscode-extension/src/baseline-check/seo/seo-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Video/Audio Elements (advanced)</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 3 times</div>
+                    <div class="feature-files">📁 test/baseline.test.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">WebSocket</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 1 time</div>
+                    <div class="feature-files">📁 test/scan.test.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.clamp</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 1 time</div>
+                    <div class="feature-files">📁 test/scan.test.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">ARIA Attributes</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 10 times</div>
+                    <div class="feature-files">📁 src/ai/ai-analyzer.js, src/ai/ai-recommendations.js, src/accessibility/accessibility-analyzer.js, src/accessibility/accessibility-recommendations.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/accessibility/accessibility-analyzer.js, vscode-extension/src/baseline-check/accessibility/accessibility-recommendations.js, vscode-extension/src/baseline-check/ai/ai-analyzer.js, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Service Worker</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 5 times</div>
+                    <div class="feature-files">📁 src/ai/ai-recommendations.js, src/features/enhanced-features.js, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/ai/ai-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">IndexedDB</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/baseline/index.js, src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/baseline/index.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">File System Access API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Streams API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Locks API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Share API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Serial API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Bluetooth API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web USB API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">WebXR API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Audio API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Crypto API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Intersection Observer v2</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Performance Observer</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Payment Request API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Web Authentication API</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Flexbox (advanced)</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Cascade Layers</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS View Transitions</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Scroll-driven Animations</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/extension.ts, vscode-extension/src/webviewProvider.ts, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Picture Element</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, src/performance/performance-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">WeakRef</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Push Notifications</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 4 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, src/performance/performance-recommendations.js, vscode-extension/src/baseline-check/features/enhanced-features.js, vscode-extension/src/baseline-check/performance/performance-recommendations.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">Background Sync</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/features/enhanced-features.js, vscode-extension/src/baseline-check/features/enhanced-features.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">URL.createObjectURL</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">URL.revokeObjectURL</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 2 times</div>
+                    <div class="feature-files">📁 src/monitoring/realtime-dashboard.js, vscode-extension/src/baseline-check/monitoring/realtime-dashboard.js</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">CSS Logical Properties</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 1 time</div>
+                    <div class="feature-files">📁 vscode-extension/demo-project/styles.css</div>
+                </div>
+                <div class="feature-item unknown">
+                    <div class="feature-header">
+                        <span class="feature-name">css.logical_properties</span>
+                        <span class="status-badge unknown">UNKNOWN</span>
+                    </div>
+                    <div class="feature-details">Used 1 time</div>
+                    <div class="feature-files">📁 vscode-extension/demo-project/styles.css</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">📊 Scan Metadata</h2>
+            <div class="metadata-box">
+                <p><strong>📁 Files Scanned:</strong> 129</p>
+                <p><strong>✅ Files Processed:</strong> 129</p>
+                <p><strong>🔍 Features Detected:</strong> 84</p>
+                <p><strong>📅 Generated:</strong> 2025-10-10T21:42:17.233Z</p>
+                <p><strong>🔧 Version:</strong> 2.0.0</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

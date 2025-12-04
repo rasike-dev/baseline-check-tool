@@ -1,0 +1,51 @@
+name: Baseline Check - React
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  baseline-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run baseline check
+        run: |
+          npx baseline-check run --paths "src" --out "baseline-report.json"
+      
+      - name: Comment PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('baseline-report.json', 'utf8'));
+            const { generateSummary } = require('./action/src/reporters/summary.js');
+            
+            const summary = await generateSummary({
+              report: 'baseline-report.json',
+              format: 'markdown'
+            });
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+      
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: baseline-report
+          path: baseline-report.json

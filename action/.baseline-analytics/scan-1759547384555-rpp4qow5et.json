@@ -1,0 +1,27 @@
+{
+  "scanId": "1759547384555-rpp4qow5et",
+  "timestamp": "2025-10-04T03:09:44.555Z",
+  "metadata": {
+    "paths": [
+      "./empty-test-dir"
+    ],
+    "duration": 11,
+    "version": "2.0.0",
+    "scannedFiles": 0,
+    "processedFiles": 0,
+    "errorCount": 0
+  },
+  "features": {
+    "total": 0,
+    "byStatus": {},
+    "byCategory": {},
+    "byBrowser": {},
+    "riskScore": 0,
+    "adoptionScore": 0
+  },
+  "trends": {
+    "modernFeatures": 0,
+    "legacyFeatures": 0,
+    "experimentalFeatures": 0
+  }
+}
