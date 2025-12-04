@@ -18,6 +18,9 @@ export class BundleDashboard {
    * Generate bundle dashboard HTML
    */
   generateDashboard(analysis, recommendations) {
+    // Process and validate analysis data
+    const processedAnalysis = this.processAnalysisData(analysis);
+    
     const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -30,34 +33,133 @@ export class BundleDashboard {
     </style>
 </head>
 <body class="${this.options.theme}">
+    ${this.generateNavigation('bundle')}
     <div class="dashboard">
         <header class="dashboard-header">
             <h1>📦 Bundle Analysis Dashboard</h1>
             <div class="header-info">
-                <span class="score-badge score-${this.getScoreClass(analysis.bundleScore)}">
-                    ${analysis.bundleScore}/100
+                <span class="score-badge score-${this.getScoreClass(processedAnalysis.bundleScore)}">
+                    ${processedAnalysis.bundleScore}/100
                 </span>
-                <span class="bundle-badge bundle-${analysis.bundleLevel.toLowerCase()}">
-                    ${analysis.bundleLevel}
+                <span class="bundle-badge bundle-${processedAnalysis.bundleLevel.toLowerCase()}">
+                    ${processedAnalysis.bundleLevel}
                 </span>
             </div>
         </header>
 
         <div class="dashboard-content">
-            ${this.generateMetrics(analysis)}
-            ${this.generateCharts(analysis)}
-            ${this.generateIssues(analysis)}
+            ${this.generateMetrics(processedAnalysis)}
+            ${this.generateCharts(processedAnalysis)}
+            ${this.generateIssues(processedAnalysis)}
             ${this.generateRecommendations(recommendations)}
         </div>
     </div>
 
     <script>
+        // Embed analysis data for JavaScript
+        const analysisData = ${JSON.stringify(processedAnalysis)};
         ${this.generateJavaScript()}
     </script>
 </body>
 </html>`;
 
     return html;
+  }
+
+  /**
+   * Process and validate analysis data
+   */
+  processAnalysisData(analysis) {
+    if (!analysis) {
+      return {
+        issues: [],
+        bundleScore: 100,
+        bundleLevel: 'Excellent',
+        summary: {
+          totalIssues: 0,
+          bySeverity: { high: 0, medium: 0, low: 0 },
+          byCategory: {}
+        }
+      };
+    }
+
+    // Ensure issues array exists
+    const issues = analysis.issues || [];
+    
+    // Use nullish coalescing to handle 0 as a valid score (don't use || which treats 0 as falsy)
+    const bundleScore = (analysis.bundleScore !== undefined && analysis.bundleScore !== null) ? analysis.bundleScore : 100;
+    
+    // Determine level if missing
+    let bundleLevel = analysis.bundleLevel;
+    if (!bundleLevel) {
+      bundleLevel = this.determineLevel(bundleScore);
+    }
+
+    // Ensure summary exists
+    let summary = analysis.summary;
+    if (!summary) {
+      summary = this.generateSummary(issues);
+    } else {
+      // Validate and fix summary structure
+      if (summary.totalIssues === undefined || summary.totalIssues === null) {
+        summary.totalIssues = issues.length;
+      }
+      if (!summary.bySeverity) {
+        summary.bySeverity = {
+          high: issues.filter(i => i.severity === 'high').length,
+          medium: issues.filter(i => i.severity === 'medium').length,
+          low: issues.filter(i => i.severity === 'low').length
+        };
+      }
+      if (!summary.byCategory) {
+        summary.byCategory = {};
+        issues.forEach(issue => {
+          const category = issue.category || 'other';
+          summary.byCategory[category] = (summary.byCategory[category] || 0) + 1;
+        });
+      }
+    }
+
+    return {
+      issues,
+      bundleScore,
+      bundleLevel,
+      summary
+    };
+  }
+
+  /**
+   * Determine bundle level from score
+   */
+  determineLevel(score) {
+    if (score >= 90) return 'Excellent';
+    if (score >= 75) return 'Good';
+    if (score >= 60) return 'Fair';
+    if (score >= 40) return 'Poor';
+    return 'Critical';
+  }
+
+  /**
+   * Generate summary from issues
+   */
+  generateSummary(issues) {
+    const bySeverity = {
+      high: issues.filter(i => i.severity === 'high').length,
+      medium: issues.filter(i => i.severity === 'medium').length,
+      low: issues.filter(i => i.severity === 'low').length
+    };
+
+    const byCategory = {};
+    issues.forEach(issue => {
+      const category = issue.category || 'other';
+      byCategory[category] = (byCategory[category] || 0) + 1;
+    });
+
+    return {
+      totalIssues: issues.length,
+      bySeverity,
+      byCategory
+    };
   }
 
   /**
@@ -204,46 +306,109 @@ export class BundleDashboard {
         }
 
         .chart {
-            min-height: 200px;
+            min-height: auto;
             display: flex;
-            align-items: end;
-            gap: 8px;
+            flex-direction: column;
+            gap: 15px;
             padding: 10px 0;
         }
 
-        .bar {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            border-radius: 4px 4px 0 0;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .chart-item {
+            margin-bottom: 0;
         }
 
-        .bar:hover {
-            opacity: 0.8;
-            transform: scaleY(1.05);
+        .chart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
-        .bar-label {
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        .bar-value {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
+        .chart-item-label {
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 500;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: capitalize;
+        }
+
+        .chart-item-label .icon {
+            font-size: 1rem;
+        }
+
+        .chart-item-value {
+            font-size: 1.1rem;
+            font-weight: 700;
             color: var(--text-color);
         }
+
+        .chart-progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--bg-color);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chart-progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            position: relative;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 6px;
+        }
+
+        .chart-progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chart-progress-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Severity specific colors */
+        .severity-high .chart-progress-fill { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .severity-medium .chart-progress-fill { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .severity-low .chart-progress-fill { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+
+        /* Category colors */
+        .category-item:nth-child(1) .chart-progress-fill { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .category-item:nth-child(2) .chart-progress-fill { background: linear-gradient(90deg, #10b981, #059669); }
+        .category-item:nth-child(3) .chart-progress-fill { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .category-item:nth-child(4) .chart-progress-fill { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .category-item:nth-child(5) .chart-progress-fill { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .category-item:nth-child(6) .chart-progress-fill { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+        .category-item:nth-child(7) .chart-progress-fill { background: linear-gradient(90deg, #f472b6, #ec4899); }
+        .category-item:nth-child(8) .chart-progress-fill { background: linear-gradient(90deg, #a78bfa, #8b5cf6); }
+
+        /* Score range colors */
+        .score-range-critical .chart-progress-fill { background: linear-gradient(90deg, #dc2626, #991b1b); }
+        .score-range-poor .chart-progress-fill { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .score-range-fair .chart-progress-fill { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .score-range-good .chart-progress-fill { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .score-range-excellent .chart-progress-fill { background: linear-gradient(90deg, #10b981, #059669); }
 
         .issues-section {
             background: var(--card-bg);
@@ -486,6 +651,74 @@ export class BundleDashboard {
             --fix-color: #059669;
         }
 
+        /* Navigation bar styles */
+        .dashboard-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-color);
+            border-color: var(--border-color);
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .dashboard {
+            margin-top: 0;
+        }
+
         @media (max-width: 768px) {
             .dashboard {
                 padding: 10px;
@@ -495,6 +728,7 @@ export class BundleDashboard {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
+                margin-top: 20px;
             }
             
             .dashboard-header h1 {
@@ -508,44 +742,109 @@ export class BundleDashboard {
             .charts-grid {
                 grid-template-columns: 1fr;
             }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
     `;
+  }
+
+  /**
+   * Generate navigation bar
+   */
+  generateNavigation(activeDashboard) {
+    const navLinks = [
+      { id: 'hub', label: '🏠 Hub', href: '../index.html' },
+      { id: 'baseline', label: '🌐 Baseline', href: '../baseline/baseline-dashboard.html' },
+      { id: 'performance', label: '⚡ Performance', href: '../performance/performance-dashboard.html' },
+      { id: 'security', label: '🔒 Security', href: '../security/security-dashboard.html' },
+      { id: 'accessibility', label: '♿ Accessibility', href: '../accessibility/accessibility-dashboard.html' },
+      { id: 'seo', label: '🔍 SEO', href: '../seo/seo-dashboard.html' },
+      { id: 'bundle', label: '📦 Bundle', href: '../bundle/bundle-dashboard.html' }
+    ];
+
+    return `
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">📊 Baseline Check</a>
+            <div class="nav-links">
+                ${navLinks.map(link => `
+                    <a href="${link.href}" class="nav-link ${activeDashboard === link.id ? 'active' : ''}">${link.label}</a>
+                `).join('')}
+            </div>
+        </div>
+    </nav>`;
   }
 
   /**
    * Generate metrics section
    */
   generateMetrics(analysis) {
+    // Handle missing or incomplete data
+    if (!analysis || !analysis.summary) {
+      analysis = {
+        bundleScore: 100,
+        bundleLevel: 'Excellent',
+        summary: {
+          totalIssues: 0,
+          bySeverity: { high: 0, medium: 0, low: 0 },
+          byCategory: {}
+        }
+      };
+    }
+    
     const summary = analysis.summary;
+    const bySeverity = summary.bySeverity || { high: 0, medium: 0, low: 0 };
+    // Use nullish coalescing to handle 0 as a valid score (don't use || which treats 0 as falsy)
+    const bundleScore = (analysis.bundleScore !== undefined && analysis.bundleScore !== null) ? analysis.bundleScore : 100;
+    const bundleLevel = analysis.bundleLevel || 'Excellent';
     
     return `
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-value">${analysis.bundleScore}</div>
+                <div class="metric-value" style="color: ${this.getScoreColor(bundleScore)}">${bundleScore}</div>
                 <div class="metric-label">Bundle Score</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">${summary.totalIssues}</div>
+                <div class="metric-value">${summary.totalIssues || 0}</div>
                 <div class="metric-label">Total Issues</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">${summary.bySeverity.high}</div>
+                <div class="metric-value" style="color: #ef4444">${bySeverity.high || 0}</div>
                 <div class="metric-label">Critical Issues</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">${summary.bySeverity.medium}</div>
+                <div class="metric-value" style="color: #f59e0b">${bySeverity.medium || 0}</div>
                 <div class="metric-label">Medium Issues</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">${summary.bySeverity.low}</div>
+                <div class="metric-value" style="color: #3b82f6">${bySeverity.low || 0}</div>
                 <div class="metric-label">Low Issues</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">${analysis.bundleLevel}</div>
+                <div class="metric-value">${bundleLevel}</div>
                 <div class="metric-label">Bundle Level</div>
             </div>
         </div>
     `;
+  }
+
+  /**
+   * Get color for score
+   */
+  getScoreColor(score) {
+    if (score >= 90) return '#10b981';
+    if (score >= 75) return '#3b82f6';
+    if (score >= 60) return '#f59e0b';
+    if (score >= 40) return '#ef4444';
+    return '#dc2626';
   }
 
   /**
@@ -554,7 +853,22 @@ export class BundleDashboard {
   generateCharts(analysis) {
     if (!this.options.includeCharts) return '';
 
+    // Handle missing or incomplete data
+    if (!analysis || !analysis.summary) {
+      analysis = {
+        bundleScore: 100,
+        summary: {
+          bySeverity: { high: 0, medium: 0, low: 0 },
+          byCategory: {}
+        }
+      };
+    }
+
     const summary = analysis.summary;
+    const bySeverity = summary.bySeverity || { high: 0, medium: 0, low: 0 };
+    const byCategory = summary.byCategory || {};
+    // Use nullish coalescing to handle 0 as a valid score (don't use || which treats 0 as falsy)
+    const bundleScore = (analysis.bundleScore !== undefined && analysis.bundleScore !== null) ? analysis.bundleScore : 100;
     
     return `
         <div class="charts-section">
@@ -563,19 +877,19 @@ export class BundleDashboard {
                 <div class="chart-container">
                     <div class="chart-title">Issues by Severity</div>
                     <div class="chart" id="severity-chart">
-                        ${this.generateSeverityChart(summary.bySeverity)}
+                        ${this.generateSeverityChart(bySeverity)}
                     </div>
                 </div>
                 <div class="chart-container">
                     <div class="chart-title">Issues by Category</div>
                     <div class="chart" id="category-chart">
-                        ${this.generateCategoryChart(summary.byCategory)}
+                        ${this.generateCategoryChart(byCategory)}
                     </div>
                 </div>
                 <div class="chart-container">
                     <div class="chart-title">Bundle Score Distribution</div>
                     <div class="chart" id="score-chart">
-                        ${this.generateScoreChart(analysis.bundleScore)}
+                        ${this.generateScoreChart(bundleScore)}
                     </div>
                 </div>
             </div>
@@ -587,17 +901,39 @@ export class BundleDashboard {
    * Generate severity chart
    */
   generateSeverityChart(bySeverity) {
-    const max = Math.max(bySeverity.high, bySeverity.medium, bySeverity.low);
-    const bars = [
-      { label: 'High', value: bySeverity.high, color: '#ef4444' },
-      { label: 'Medium', value: bySeverity.medium, color: '#f59e0b' },
-      { label: 'Low', value: bySeverity.low, color: '#3b82f6' }
+    if (!bySeverity) {
+      bySeverity = { high: 0, medium: 0, low: 0 };
+    }
+    
+    const high = bySeverity.high || 0;
+    const medium = bySeverity.medium || 0;
+    const low = bySeverity.low || 0;
+    const total = high + medium + low;
+    
+    if (total === 0) {
+      return '<div class="chart-empty-state">No severity data available</div>';
+    }
+
+    const items = [
+      { label: 'High', value: high, icon: '🔴', class: 'severity-high', percentage: total > 0 ? Math.round((high / total) * 100) : 0 },
+      { label: 'Medium', value: medium, icon: '🟡', class: 'severity-medium', percentage: total > 0 ? Math.round((medium / total) * 100) : 0 },
+      { label: 'Low', value: low, icon: '🔵', class: 'severity-low', percentage: total > 0 ? Math.round((low / total) * 100) : 0 }
     ];
 
-    return bars.map(bar => `
-      <div class="bar" style="height: ${max > 0 ? (bar.value / max) * 100 : 0}%; background: ${bar.color};">
-        <div class="bar-value">${bar.value}</div>
-        <div class="bar-label">${bar.label}</div>
+    return items.map(item => `
+      <div class="chart-item ${item.class}">
+        <div class="chart-item-header">
+          <div class="chart-item-label">
+            <span class="icon">${item.icon}</span>
+            <span>${item.label}</span>
+          </div>
+          <div class="chart-item-value">${item.value}</div>
+        </div>
+        <div class="chart-progress-bar">
+          <div class="chart-progress-fill" style="width: ${item.percentage}%;">
+            ${item.percentage > 10 ? `<span class="chart-progress-text">${item.percentage}%</span>` : ''}
+          </div>
+        </div>
       </div>
     `).join('');
   }
@@ -606,16 +942,47 @@ export class BundleDashboard {
    * Generate category chart
    */
   generateCategoryChart(byCategory) {
-    const categories = Object.entries(byCategory);
-    if (categories.length === 0) return '<div style="text-align: center; color: var(--text-muted);">No category data</div>';
+    if (!byCategory || Object.keys(byCategory).length === 0) {
+      return '<div class="chart-empty-state">No category data available</div>';
+    }
     
-    const max = Math.max(...categories.map(([, count]) => count));
-    const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+    const categories = Object.entries(byCategory);
+    const total = categories.reduce((sum, [, count]) => sum + count, 0);
+    
+    if (total === 0) {
+      return '<div class="chart-empty-state">No category data available</div>';
+    }
 
-    return categories.map(([category, count], index) => `
-      <div class="bar" style="height: ${max > 0 ? (count / max) * 100 : 0}%; background: ${colors[index % colors.length]};">
-        <div class="bar-value">${count}</div>
-        <div class="bar-label">${category}</div>
+    // Sort by count (highest first) and format category names
+    const formatCategory = (cat) => {
+      return cat
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase());
+    };
+
+    const sortedCategories = categories
+      .sort(([, a], [, b]) => b - a)
+      .map(([category, count], index) => ({
+        category,
+        count,
+        label: formatCategory(category),
+        percentage: total > 0 ? Math.round((count / total) * 100) : 0,
+        class: `category-item`
+      }));
+
+    return sortedCategories.map((item, index) => `
+      <div class="chart-item ${item.class}">
+        <div class="chart-item-header">
+          <div class="chart-item-label">
+            <span>${item.label}</span>
+          </div>
+          <div class="chart-item-value">${item.count}</div>
+        </div>
+        <div class="chart-progress-bar">
+          <div class="chart-progress-fill" style="width: ${item.percentage}%;">
+            ${item.percentage > 8 ? `<span class="chart-progress-text">${item.percentage}%</span>` : ''}
+          </div>
+        </div>
       </div>
     `).join('');
   }
@@ -624,27 +991,46 @@ export class BundleDashboard {
    * Generate score chart
    */
   generateScoreChart(score) {
+    const normalizedScore = Math.max(0, Math.min(100, score || 0));
+    
     const scoreRanges = [
-      { label: '0-40', value: score <= 40 ? 100 : 0, color: '#dc2626' },
-      { label: '41-60', value: score > 40 && score <= 60 ? 100 : 0, color: '#ef4444' },
-      { label: '61-75', value: score > 60 && score <= 75 ? 100 : 0, color: '#f59e0b' },
-      { label: '76-90', value: score > 75 && score <= 90 ? 100 : 0, color: '#3b82f6' },
-      { label: '91-100', value: score > 90 ? 100 : 0, color: '#10b981' }
+      { label: '0-40', min: 0, max: 40, class: 'score-range-critical', icon: '🔴' },
+      { label: '41-60', min: 41, max: 60, class: 'score-range-poor', icon: '🟠' },
+      { label: '61-75', min: 61, max: 75, class: 'score-range-fair', icon: '🟡' },
+      { label: '76-90', min: 76, max: 90, class: 'score-range-good', icon: '🔵' },
+      { label: '91-100', min: 91, max: 100, class: 'score-range-excellent', icon: '🟢' }
     ];
 
-    return scoreRanges.map(range => `
-      <div class="bar" style="height: ${range.value}%; background: ${range.color};">
-        <div class="bar-value">${range.value > 0 ? score : ''}</div>
-        <div class="bar-label">${range.label}</div>
-      </div>
-    `).join('');
+    return scoreRanges.map(range => {
+      const isActive = normalizedScore >= range.min && normalizedScore <= range.max;
+      const percentage = isActive ? 100 : 0;
+      
+      return `
+        <div class="chart-item ${range.class}">
+          <div class="chart-item-header">
+            <div class="chart-item-label">
+              <span class="icon">${range.icon}</span>
+              <span>${range.label}</span>
+            </div>
+            <div class="chart-item-value">${isActive ? normalizedScore : '-'}</div>
+          </div>
+          <div class="chart-progress-bar">
+            <div class="chart-progress-fill" style="width: ${percentage}%;">
+              ${isActive ? `<span class="chart-progress-text">${normalizedScore}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   /**
    * Generate issues section
    */
   generateIssues(analysis) {
-    if (analysis.issues.length === 0) {
+    const issues = analysis.issues || [];
+    
+    if (issues.length === 0) {
       return `
         <div class="issues-section">
           <h2 class="section-title">✅ No Bundle Issues Found</h2>
@@ -656,14 +1042,14 @@ export class BundleDashboard {
     }
 
     const issuesBySeverity = {
-      high: analysis.issues.filter(i => i.severity === 'high'),
-      medium: analysis.issues.filter(i => i.severity === 'medium'),
-      low: analysis.issues.filter(i => i.severity === 'low')
+      high: issues.filter(i => i.severity === 'high'),
+      medium: issues.filter(i => i.severity === 'medium'),
+      low: issues.filter(i => i.severity === 'low')
     };
 
     return `
         <div class="issues-section">
-            <h2 class="section-title">🔍 Bundle Issues (${analysis.issues.length} found)</h2>
+            <h2 class="section-title">🔍 Bundle Issues (${issues.length} found)</h2>
             <div class="issues-list">
                 ${this.generateIssuesList(issuesBySeverity.high, 'Critical Issues')}
                 ${this.generateIssuesList(issuesBySeverity.medium, 'Medium Issues')}
@@ -795,18 +1181,12 @@ export class BundleDashboard {
     return `
         // Dashboard functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Add hover effects to charts
-            const bars = document.querySelectorAll('.bar');
-            bars.forEach(bar => {
-                bar.addEventListener('mouseenter', function() {
-                    this.style.opacity = '0.8';
-                    this.style.transform = 'scaleY(1.05)';
-                });
-                
-                bar.addEventListener('mouseleave', function() {
-                    this.style.opacity = '1';
-                    this.style.transform = 'scaleY(1)';
-                });
+            // Ensure charts are visible
+            const charts = document.querySelectorAll('.chart');
+            charts.forEach(chart => {
+                if (chart.children.length === 0) {
+                    chart.innerHTML = '<div class="chart-empty-state">No data available</div>';
+                }
             });
 
             // Add click handlers for issue items
@@ -830,6 +1210,11 @@ export class BundleDashboard {
                     }, 200);
                 });
             });
+
+            // Log analysis data for debugging
+            if (typeof analysisData !== 'undefined') {
+                console.log('Bundle Analysis Data:', analysisData);
+            }
         });
     `;
   }
