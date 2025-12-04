@@ -267,7 +267,7 @@ jobs:
           script: |
             const fs = require('fs');
             const report = JSON.parse(fs.readFileSync('baseline-report.json', 'utf8'));
-            const { generateSummary } = require('./action/src/reporters/summary.js');
+            const { generateSummary } = require('./src/reporters/summary.js');
             
             const summary = await generateSummary({
               report: 'baseline-report.json',

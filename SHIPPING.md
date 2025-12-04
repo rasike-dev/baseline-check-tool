@@ -42,8 +42,8 @@ npx baseline-check init
 npm run build  # (if you add a build step)
 
 # 2. Create release archive
-tar -czf baseline-check-v2.0.0.tar.gz action/
-zip -r baseline-check-v2.0.0.zip action/
+tar -czf baseline-check-v2.0.0.tar.gz ./
+zip -r baseline-check-v2.0.0.zip ./
 
 # 3. Upload to GitHub Releases
 gh release create v2.0.0 \
@@ -60,11 +60,11 @@ gh release create v2.0.0 \
 FROM node:20-alpine
 
 WORKDIR /app
-COPY action/package*.json ./
+COPY package*.json ./
 RUN npm ci --only=production
 
-COPY action/src ./src
-COPY action/dashboard ./dashboard
+COPY src ./src
+COPY dashboard ./dashboard
 
 RUN npm install -g .
 
@@ -107,7 +107,7 @@ inputs:
     required: false
 runs:
   using: 'node20'
-  main: 'action/src/cli.js'
+  main: 'src/cli.js'
 ```
 
 #### **Publish to Marketplace**
@@ -164,7 +164,7 @@ end
     <projectUrl>https://github.com/baseline-check/baseline-check</projectUrl>
   </metadata>
   <files>
-    <file src="action/**" target="tools" />
+    <file src="**" target="tools" />
   </files>
 </package>
 ```

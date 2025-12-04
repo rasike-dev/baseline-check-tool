@@ -5,14 +5,14 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY action/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production
 
 # Copy source code
-COPY action/src ./src
-COPY action/LICENSE ./
+COPY src ./src
+COPY LICENSE ./
 COPY README.md ./
 
 # Install globally
