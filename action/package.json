@@ -1,6 +1,6 @@
 {
   "name": "baseline-check-tool",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Check web features for baseline browser compatibility with smart recommendations and analytics",
   "type": "module",
   "bin": {

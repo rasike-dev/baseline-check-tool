@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.3] - 2025-12-04
+
+### Fixed
+- Fixed dashboard hub links to use correct subdirectory paths
+- Standardized performance dashboard filename (removed timestamp)
+- Fixed all navigation links to performance dashboard across all dashboards
+- Added navigation bar to baseline dashboard
+- Fixed performance dashboard data loading issues
+- Improved project structure (README.md at root for GitHub display)
+
+### Changed
+- Performance dashboard now uses consistent filename: `performance-dashboard.html`
+- Dashboard hub dynamically finds performance dashboard files
+- Removed abandoned folders (empty dashboard/, old root monitoring/)
+
 ## [2.3.2] - 2025-10-09
 
 ### Added
