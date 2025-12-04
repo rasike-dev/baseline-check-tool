@@ -234,3 +234,7 @@ analytics/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Test projects and temporary files
+test-project/
+*.test-project/
