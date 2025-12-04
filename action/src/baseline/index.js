@@ -390,6 +390,76 @@ export class BaselineAnalysis {
    * Generate baseline dashboard
    */
   generateDashboard(results, theme = 'dark') {
+    // Process scan report format if needed
+    let processedData = results;
+    
+    // Check if this is a scan report (has results array) vs processed analysis
+    if (results.results && Array.isArray(results.results)) {
+      // This is a scan report - process it
+      const scanResults = results.results || [];
+      const metadata = results.metadata || {};
+      
+      // Calculate stats from scan results
+      const baselineLike = scanResults.filter(r => r.status === 'baseline_like').length;
+      const risky = scanResults.filter(r => r.status === 'risky').length;
+      const unknown = scanResults.filter(r => r.status === 'unknown').length;
+      const total = scanResults.length;
+      
+      // Calculate compliance score
+      const complianceScore = total > 0 ? Math.round((baselineLike / total) * 100) : 0;
+      
+      // Generate polyfill recommendations from risky features
+      const riskyFeatures = scanResults.filter(r => r.status === 'risky');
+      const polyfillCount = riskyFeatures.length;
+      const estimatedSize = polyfillCount * 15; // Rough estimate: 15KB per polyfill
+      
+      // Process into expected format
+      processedData = {
+        browserSupport: {
+          summary: {
+            baselineFeatures: baselineLike,
+            riskyFeatures: risky,
+            unsupportedFeatures: unknown,
+            totalFeatures: total
+          },
+          features: scanResults
+        },
+        polyfillRecommendations: {
+          summary: {
+            totalPolyfills: polyfillCount,
+            estimatedSize: estimatedSize,
+            maintenanceLevel: polyfillCount > 0 ? 'Medium' : 'Low'
+          },
+          recommendations: riskyFeatures.map(f => ({
+            feature: f.feature,
+            polyfill: this.polyfillRecommender.findPolyfill(f.feature),
+            priority: 'high'
+          }))
+        },
+        progressiveEnhancement: {
+          summary: {
+            progressiveFiles: metadata.processedFiles || 0,
+            fallbackIssues: risky,
+            overallScore: complianceScore
+          }
+        },
+        compliance: {
+          scores: {
+            overall: complianceScore,
+            browserSupport: complianceScore,
+            featureStability: complianceScore,
+            performance: complianceScore,
+            accessibility: complianceScore
+          }
+        },
+        summary: {
+          totalFiles: metadata.scannedFiles || 0,
+          recommendations: this.generateRecommendationsFromScan(scanResults)
+        }
+      };
+    }
+    
+    const data = processedData;
     const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -591,8 +661,8 @@ export class BaselineAnalysis {
 
         <div class="score-card">
             <div class="score-display">
-                <div class="score-number ${this.getScoreClass(results.compliance?.scores?.overall || 0)}">
-                    ${results.compliance?.scores?.overall || 0}
+                <div class="score-number ${this.getScoreClass(data.compliance?.scores?.overall || 0)}">
+                    ${data.compliance?.scores?.overall || 0}
                 </div>
                 <div class="score-label">Baseline Compliance Score</div>
             </div>
@@ -603,15 +673,19 @@ export class BaselineAnalysis {
                 <h3>🌐 Browser Support</h3>
                 <div class="stat">
                     <span class="stat-label">Baseline Features</span>
-                    <span class="stat-value">${results.browserSupport?.summary?.baselineFeatures || 0}</span>
+                    <span class="stat-value">${data.browserSupport?.summary?.baselineFeatures || 0}</span>
                 </div>
                 <div class="stat">
                     <span class="stat-label">Risky Features</span>
-                    <span class="stat-value">${results.browserSupport?.summary?.riskyFeatures || 0}</span>
+                    <span class="stat-value">${data.browserSupport?.summary?.riskyFeatures || 0}</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Unsupported Features</span>
-                    <span class="stat-value">${results.browserSupport?.summary?.unsupportedFeatures || 0}</span>
+                    <span class="stat-label">Unknown Features</span>
+                    <span class="stat-value">${data.browserSupport?.summary?.unsupportedFeatures || 0}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Total Features</span>
+                    <span class="stat-value">${data.browserSupport?.summary?.totalFeatures || 0}</span>
                 </div>
             </div>
 
@@ -619,51 +693,61 @@ export class BaselineAnalysis {
                 <h3>🔧 Polyfill Recommendations</h3>
                 <div class="stat">
                     <span class="stat-label">Total Polyfills</span>
-                    <span class="stat-value">${results.polyfillRecommendations?.summary?.totalPolyfills || 0}</span>
+                    <span class="stat-value">${data.polyfillRecommendations?.summary?.totalPolyfills || 0}</span>
                 </div>
                 <div class="stat">
                     <span class="stat-label">Estimated Size</span>
-                    <span class="stat-value">${Math.round((results.polyfillRecommendations?.summary?.estimatedSize || 0) / 1024)} KB</span>
+                    <span class="stat-value">${Math.round((data.polyfillRecommendations?.summary?.estimatedSize || 0) / 1024)} KB</span>
                 </div>
                 <div class="stat">
                     <span class="stat-label">Maintenance Level</span>
-                    <span class="stat-value">${results.polyfillRecommendations?.summary?.maintenanceLevel || 'N/A'}</span>
+                    <span class="stat-value">${data.polyfillRecommendations?.summary?.maintenanceLevel || 'N/A'}</span>
                 </div>
             </div>
 
             <div class="card">
-                <h3>📈 Progressive Enhancement</h3>
+                <h3>📈 Analysis Summary</h3>
                 <div class="stat">
-                    <span class="stat-label">Progressive Files</span>
-                    <span class="stat-value">${results.progressiveEnhancement?.summary?.progressiveFiles || 0}</span>
+                    <span class="stat-label">Files Scanned</span>
+                    <span class="stat-value">${data.summary?.totalFiles || data.progressiveEnhancement?.summary?.progressiveFiles || 0}</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Fallback Issues</span>
-                    <span class="stat-value">${results.progressiveEnhancement?.summary?.fallbackIssues || 0}</span>
+                    <span class="stat-label">Features Detected</span>
+                    <span class="stat-value">${data.browserSupport?.summary?.totalFeatures || 0}</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Overall Score</span>
-                    <span class="stat-value">${results.progressiveEnhancement?.summary?.overallScore || 0}/100</span>
+                    <span class="stat-label">Compliance Score</span>
+                    <span class="stat-value">${data.compliance?.scores?.overall || 0}/100</span>
                 </div>
             </div>
         </div>
 
         <div class="chart-container">
-            <h3>📊 Compliance Breakdown</h3>
+            <h3>📊 Feature Status Breakdown</h3>
             <div class="chart">
-                <div>
-                    <div>Browser Support: ${results.compliance?.scores?.browserSupport?.toFixed(1) || 0}/100</div>
-                    <div>Feature Stability: ${results.compliance?.scores?.featureStability?.toFixed(1) || 0}/100</div>
-                    <div>Performance: ${results.compliance?.scores?.performance?.toFixed(1) || 0}/100</div>
-                    <div>Accessibility: ${results.compliance?.scores?.accessibility?.toFixed(1) || 0}/100</div>
+                <div style="display: flex; flex-direction: column; gap: 15px; padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>✅ Baseline-like Features</span>
+                        <strong style="color: #10b981;">${data.browserSupport?.summary?.baselineFeatures || 0}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>⚠️ Risky Features</span>
+                        <strong style="color: #f59e0b;">${data.browserSupport?.summary?.riskyFeatures || 0}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>❓ Unknown Features</span>
+                        <strong style="color: #6b7280;">${data.browserSupport?.summary?.unsupportedFeatures || 0}</strong>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="recommendations">
             <h3>💡 Recommendations</h3>
-            ${this.generateRecommendationsHTML(results.summary?.recommendations || [])}
+            ${this.generateRecommendationsHTML(data.summary?.recommendations || [])}
         </div>
+        
+        ${this.generateFeaturesListHTML(data.browserSupport?.features || [])}
     </div>
 </body>
 </html>`;
@@ -697,6 +781,103 @@ export class BaselineAnalysis {
     if (score >= 80) return 'score-good';
     if (score >= 60) return 'score-fair';
     return 'score-poor';
+  }
+
+  /**
+   * Generate recommendations from scan results
+   */
+  generateRecommendationsFromScan(scanResults) {
+    const recommendations = [];
+    const risky = scanResults.filter(r => r.status === 'risky');
+    const unknown = scanResults.filter(r => r.status === 'unknown');
+    
+    if (risky.length > 0) {
+      recommendations.push({
+        type: 'browser_support',
+        priority: 'high',
+        title: 'Risky Features Detected',
+        message: `${risky.length} features may have limited browser support`,
+        suggestion: 'Consider adding polyfills or fallbacks for better compatibility'
+      });
+    }
+    
+    if (unknown.length > 0) {
+      recommendations.push({
+        type: 'unknown_features',
+        priority: 'medium',
+        title: 'Unknown Features',
+        message: `${unknown.length} features could not be verified against browser data`,
+        suggestion: 'Review these features manually for browser compatibility'
+      });
+    }
+    
+    return recommendations;
+  }
+
+  /**
+   * Generate features list HTML
+   */
+  generateFeaturesListHTML(features) {
+    if (!features || features.length === 0) {
+      return '';
+    }
+    
+    // Group by status
+    const baselineLike = features.filter(f => f.status === 'baseline_like' || f.status === 'baseline-like');
+    const risky = features.filter(f => f.status === 'risky');
+    const unknown = features.filter(f => f.status === 'unknown');
+    
+    return `
+        <div class="chart-container" style="margin-top: 30px;">
+            <h3>📋 Detected Features</h3>
+            ${risky.length > 0 ? `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #f59e0b; margin-bottom: 10px;">⚠️ Risky Features (${risky.length})</h4>
+                <div style="display: grid; gap: 10px;">
+                    ${risky.slice(0, 10).map(f => `
+                        <div style="padding: 10px; background: #2d2d2d; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                            <strong>${f.feature}</strong>
+                            <div style="font-size: 0.9rem; color: #cccccc; margin-top: 5px;">
+                                Files: ${Array.isArray(f.files) ? f.files.join(', ') : f.files}
+                                ${f.mdn ? `<br><a href="${f.mdn}" target="_blank" style="color: #667eea;">MDN Docs</a>` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                    ${risky.length > 10 ? `<p style="color: #cccccc; font-size: 0.9rem;">... and ${risky.length - 10} more</p>` : ''}
+                </div>
+            </div>
+            ` : ''}
+            
+            ${baselineLike.length > 0 ? `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #10b981; margin-bottom: 10px;">✅ Baseline-like Features (${baselineLike.length})</h4>
+                <div style="display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    ${baselineLike.slice(0, 15).map(f => `
+                        <div style="padding: 8px; background: #2d2d2d; border-radius: 6px; border-left: 3px solid #10b981; font-size: 0.9rem;">
+                            <strong>${f.feature}</strong>
+                            ${f.mdn ? `<br><a href="${f.mdn}" target="_blank" style="color: #667eea; font-size: 0.8rem;">Docs</a>` : ''}
+                        </div>
+                    `).join('')}
+                    ${baselineLike.length > 15 ? `<p style="color: #cccccc; font-size: 0.9rem;">... and ${baselineLike.length - 15} more</p>` : ''}
+                </div>
+            </div>
+            ` : ''}
+            
+            ${unknown.length > 0 ? `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #6b7280; margin-bottom: 10px;">❓ Unknown Features (${unknown.length})</h4>
+                <div style="display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    ${unknown.slice(0, 10).map(f => `
+                        <div style="padding: 8px; background: #2d2d2d; border-radius: 6px; border-left: 3px solid #6b7280; font-size: 0.9rem;">
+                            ${f.feature}
+                        </div>
+                    `).join('')}
+                    ${unknown.length > 10 ? `<p style="color: #cccccc; font-size: 0.9rem;">... and ${unknown.length - 10} more</p>` : ''}
+                </div>
+            </div>
+            ` : ''}
+        </div>
+    `;
   }
 }
 
