@@ -196,6 +196,7 @@ test-integration-*/
 
 # Cache directories
 .baseline-cache/
+.baseline-analytics/
 .cache/
 cache/
 
