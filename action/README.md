@@ -7,7 +7,7 @@
 
 **Comprehensive web compatibility analysis and optimization tool for modern web development.**
 
-> 🎉 **Now available as a VS Code Extension!** Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=rasike-a.baseline-check-tool) for integrated analysis directly in your editor.
+> 📦 **Repository:** [GitHub](https://github.com/rasike-dev/baseline-check-tool) | 🎉 **Now available as a VS Code Extension!** Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=rasike-a.baseline-check-tool) for integrated analysis directly in your editor.
 
 ## 🚀 Quick Start
 
