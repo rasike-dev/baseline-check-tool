@@ -25,6 +25,7 @@ import { AccessibilityAnalysis } from './accessibility/index.js';
 import { SEOAnalysis } from './seo/index.js';
 import { BundleAnalysis } from './bundle/index.js';
 import { BaselineAnalysis } from './baseline/index.js';
+import { PerformanceAnalysis } from './performance/index.js';
 import path from 'node:path';
 
 program

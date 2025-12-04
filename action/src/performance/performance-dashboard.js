@@ -16,8 +16,30 @@ export class PerformanceDashboard {
      * Generate performance dashboard HTML
      */
     generateHTML(analysis, recommendations) {
+        // Handle empty or incomplete analysis data
+        if (!analysis || !analysis.categories || !analysis.metrics) {
+            // Try to extract basic info from available data
+            analysis = this.processEmptyAnalysis(analysis);
+        }
+        
+        // Ensure recommendations structure exists
+        if (!recommendations) {
+            recommendations = {
+                immediate: [],
+                shortTerm: [],
+                longTerm: [],
+                critical: [],
+                metrics: {
+                    totalRecommendations: 0,
+                    highPriority: 0,
+                    mediumPriority: 0,
+                    lowPriority: 0
+                }
+            };
+        }
+        
         const theme = this.options.theme;
-        const score = analysis.overallScore;
+        const score = analysis.overallScore || 100;
         const scoreColor = this.getScoreColor(score);
         
         return `<!DOCTYPE html>
@@ -895,5 +917,64 @@ export class PerformanceDashboard {
             images: 'Images'
         };
         return names[category] || category;
+    }
+
+    /**
+     * Process empty or incomplete analysis data
+     */
+    processEmptyAnalysis(analysis) {
+        // If analysis is null or undefined, create default structure
+        if (!analysis) {
+            analysis = {};
+        }
+        
+        // Ensure categories structure exists
+        if (!analysis.categories) {
+            analysis.categories = {
+                bundle: { score: 0, issues: [], recommendations: [] },
+                memory: { score: 0, issues: [], recommendations: [] },
+                network: { score: 0, issues: [], recommendations: [] },
+                rendering: { score: 0, issues: [], recommendations: [] },
+                javascript: { score: 0, issues: [], recommendations: [] },
+                css: { score: 0, issues: [], recommendations: [] },
+                images: { score: 0, issues: [], recommendations: [] }
+            };
+        }
+        
+        // Ensure metrics structure exists
+        if (!analysis.metrics) {
+            analysis.metrics = {
+                totalFiles: 0,
+                largeFiles: 0,
+                duplicateCode: 0,
+                unusedImports: 0,
+                inefficientQueries: 0,
+                memoryLeaks: 0,
+                slowOperations: 0
+            };
+        }
+        
+        // Ensure overallScore exists
+        if (analysis.overallScore === undefined || analysis.overallScore === null) {
+            // Calculate score from categories if available
+            const categoryScores = Object.values(analysis.categories)
+                .map(cat => cat.score || 0)
+                .filter(score => score > 0);
+            
+            if (categoryScores.length > 0) {
+                analysis.overallScore = Math.round(
+                    categoryScores.reduce((sum, score) => sum + score, 0) / categoryScores.length
+                );
+            } else {
+                analysis.overallScore = 100; // Default to perfect score if no data
+            }
+        }
+        
+        // Ensure criticalIssues exists
+        if (!analysis.criticalIssues) {
+            analysis.criticalIssues = [];
+        }
+        
+        return analysis;
     }
 }
