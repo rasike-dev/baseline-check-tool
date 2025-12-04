@@ -54,7 +54,7 @@ export async function handlePerformanceCommand(options) {
 
         // Generate dashboard if requested
         if (dashboard) {
-            const dashboardPath = `dashboards/performance/performance-dashboard-${Date.now()}.html`;
+            const dashboardPath = `dashboards/performance/performance-dashboard.html`;
             fs.mkdirSync('dashboards/performance', { recursive: true });
             fs.writeFileSync(dashboardPath, results.dashboard);
             logger.info(`✅ 🌐 Performance dashboard: file://${path.resolve(dashboardPath)}`);

@@ -157,7 +157,7 @@ export class DashboardGenerator {
         </div>
         
         <div class="dashboard-grid">
-            <a href="compatibility.html" class="dashboard-card" style="--accent-color: #667eea">
+            <a href="baseline/baseline-dashboard.html" class="dashboard-card" style="--accent-color: #667eea">
                 <div class="card-icon">🌐</div>
                 <div class="card-title">Baseline Compatibility</div>
                 <div class="card-description">
@@ -166,7 +166,7 @@ export class DashboardGenerator {
                 <span class="card-status status-ready">View Report</span>
             </a>
             
-            <a href="performance.html" class="dashboard-card" style="--accent-color: #f5576c">
+            <a href="performance/performance-dashboard.html" class="dashboard-card" style="--accent-color: #f5576c">
                 <div class="card-icon">⚡</div>
                 <div class="card-title">Performance Analysis</div>
                 <div class="card-description">
@@ -175,7 +175,7 @@ export class DashboardGenerator {
                 <span class="card-status status-ready">View Report</span>
             </a>
             
-            <a href="security.html" class="dashboard-card" style="--accent-color: #c92a2a">
+            <a href="security/security-dashboard.html" class="dashboard-card" style="--accent-color: #c92a2a">
                 <div class="card-icon">🔒</div>
                 <div class="card-title">Security Analysis</div>
                 <div class="card-description">
@@ -184,7 +184,7 @@ export class DashboardGenerator {
                 <span class="card-status status-ready">View Report</span>
             </a>
             
-            <a href="accessibility.html" class="dashboard-card" style="--accent-color: #845ef7">
+            <a href="accessibility/accessibility-dashboard.html" class="dashboard-card" style="--accent-color: #845ef7">
                 <div class="card-icon">♿</div>
                 <div class="card-title">Accessibility Analysis</div>
                 <div class="card-description">
@@ -193,7 +193,7 @@ export class DashboardGenerator {
                 <span class="card-status status-ready">View Report</span>
             </a>
             
-            <a href="seo.html" class="dashboard-card" style="--accent-color: #20c997">
+            <a href="seo/seo-dashboard.html" class="dashboard-card" style="--accent-color: #20c997">
                 <div class="card-icon">🔍</div>
                 <div class="card-title">SEO Analysis</div>
                 <div class="card-description">
@@ -202,7 +202,7 @@ export class DashboardGenerator {
                 <span class="card-status status-ready">View Report</span>
             </a>
             
-            <a href="bundle.html" class="dashboard-card" style="--accent-color: #fd7e14">
+            <a href="bundle/bundle-dashboard.html" class="dashboard-card" style="--accent-color: #fd7e14">
                 <div class="card-icon">📦</div>
                 <div class="card-title">Bundle Analysis</div>
                 <div class="card-description">

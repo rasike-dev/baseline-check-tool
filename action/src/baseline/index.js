@@ -637,6 +637,64 @@ export class BaselineAnalysis {
             font-size: 1.1rem;
         }
 
+        .dashboard-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: ${theme === 'dark' ? '#1a1a1a' : '#ffffff'};
+            border-bottom: 2px solid ${theme === 'dark' ? '#404040' : '#e1e5e9'};
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: ${theme === 'dark' ? '#ffffff' : '#333333'};
+            text-decoration: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: ${theme === 'dark' ? '#cccccc' : '#666666'};
+            background: ${theme === 'dark' ? '#2d2d2d' : '#f8f9fa'};
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            background: ${theme === 'dark' ? '#404040' : '#e1e5e9'};
+            color: ${theme === 'dark' ? '#ffffff' : '#333333'};
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -649,10 +707,34 @@ export class BaselineAnalysis {
             .grid {
                 grid-template-columns: 1fr;
             }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
     </style>
 </head>
 <body>
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">📊 Baseline Check</a>
+            <div class="nav-links">
+                <a href="../index.html" class="nav-link">🏠 Hub</a>
+                <a href="../baseline/baseline-dashboard.html" class="nav-link active">🌐 Baseline</a>
+                <a href="../performance/performance-dashboard.html" class="nav-link">⚡ Performance</a>
+                <a href="../security/security-dashboard.html" class="nav-link">🔒 Security</a>
+                <a href="../accessibility/accessibility-dashboard.html" class="nav-link">♿ Accessibility</a>
+                <a href="../seo/seo-dashboard.html" class="nav-link">🔍 SEO</a>
+                <a href="../bundle/bundle-dashboard.html" class="nav-link">📦 Bundle</a>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <div class="header">
             <h1>🎯 Baseline Analysis Dashboard</h1>

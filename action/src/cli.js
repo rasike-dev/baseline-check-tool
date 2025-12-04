@@ -1121,7 +1121,7 @@ program
 
       // Generate dashboard if requested
       if (options.dashboard) {
-        const dashboardPath = `dashboards/performance/performance-dashboard-${Date.now()}.html`;
+        const dashboardPath = `dashboards/performance/performance-dashboard.html`;
         await fs.promises.mkdir('dashboards/performance', { recursive: true });
         await fs.promises.writeFile(dashboardPath, results.dashboard);
         logger.success(`🌐 Performance dashboard: file://${path.resolve(dashboardPath)}`);
