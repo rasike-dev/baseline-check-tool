@@ -581,12 +581,12 @@ export class DashboardGenerator {
     getNavigationBar(activePage) {
         const pages = [
             { id: 'index', label: '🏠 Home', file: 'index.html' },
-            { id: 'compatibility', label: '🌐 Compatibility', file: 'compatibility.html' },
-            { id: 'performance', label: '⚡ Performance', file: 'performance.html' },
-            { id: 'security', label: '🔒 Security', file: 'security.html' },
-            { id: 'accessibility', label: '♿ Accessibility', file: 'accessibility.html' },
-            { id: 'seo', label: '🔍 SEO', file: 'seo.html' },
-            { id: 'bundle', label: '📦 Bundle', file: 'bundle.html' }
+            { id: 'baseline', label: '🌐 Baseline', file: 'baseline/baseline-dashboard.html' },
+            { id: 'performance', label: '⚡ Performance', file: 'performance/performance-dashboard.html' },
+            { id: 'security', label: '🔒 Security', file: 'security/security-dashboard.html' },
+            { id: 'accessibility', label: '♿ Accessibility', file: 'accessibility/accessibility-dashboard.html' },
+            { id: 'seo', label: '🔍 SEO', file: 'seo/seo-dashboard.html' },
+            { id: 'bundle', label: '📦 Bundle', file: 'bundle/bundle-dashboard.html' }
         ];
 
         let html = '<div class="nav">';
